@@ -17,8 +17,10 @@ Our documentation is organized into focused, modular sections:
 ### 📚 Core Documentation
 
 - **[Getting Started](src/nexus/docs/readmes/GETTING_STARTED.md)** - Installation, setup, and quick start guide
+- **[Requirements](src/nexus/docs/readmes/REQUIREMENTS.md)** - Functional and non-functional requirements
 - **[Project Structure](src/nexus/docs/readmes/PROJECT_STRUCTURE.md)** - Detailed directory structure and organization
 - **[API Reference](src/nexus/docs/readmes/API_REFERENCE.md)** - Complete API documentation and command reference
+- **[Installer Checklist](src/nexus/docs/readmes/INSTALLER_CHECKLIST.md)** - Installer development and testing guide
 - **[Contributing](src/nexus/docs/readmes/CONTRIBUTING.md)** - Guidelines for contributing to the project
 - **[Changelog](src/nexus/docs/readmes/CHANGELOG.md)** - Project history and version changes
 

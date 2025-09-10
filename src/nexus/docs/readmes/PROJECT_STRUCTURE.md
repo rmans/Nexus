@@ -35,7 +35,9 @@ src/
     │   └── readmes/           # Modular README sections
     │       ├── PROJECT_STRUCTURE.md
     │       ├── GETTING_STARTED.md
+    │       ├── REQUIREMENTS.md
     │       ├── API_REFERENCE.md
+    │       ├── INSTALLER_CHECKLIST.md
     │       ├── CONTRIBUTING.md
     │       └── CHANGELOG.md
     └── instructions/          # Instruction definitions

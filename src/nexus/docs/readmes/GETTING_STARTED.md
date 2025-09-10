@@ -131,12 +131,14 @@ python -m nexus --debug <command>
 
 ### Getting Help
 
-- Check the [API Reference](API_REFERENCE.md) for detailed command documentation
-- Review the [Project Structure](PROJECT_STRUCTURE.md) for understanding the codebase
-- See [Contributing Guidelines](CONTRIBUTING.md) for development practices
+- Check the [Requirements](REQUIREMENTS.md) for project specifications and constraints
+- Review the [API Reference](API_REFERENCE.md) for detailed command documentation
+- See the [Project Structure](PROJECT_STRUCTURE.md) for understanding the codebase
+- Read the [Contributing Guidelines](CONTRIBUTING.md) for development practices
 
 ## Next Steps
 
+- Review the [Requirements](REQUIREMENTS.md) to understand project specifications
 - Explore the [API Reference](API_REFERENCE.md) to understand available commands
 - Check out the [Project Structure](PROJECT_STRUCTURE.md) to understand the codebase
 - Read the [Contributing Guidelines](CONTRIBUTING.md) if you want to contribute

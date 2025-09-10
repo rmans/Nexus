@@ -13,13 +13,17 @@ Thank you for your interest in contributing to Nexus! This document provides gui
 
 ### Development Setup
 
-1. **Fork and Clone**
+1. **Review Requirements**
+   - Read the [Requirements](REQUIREMENTS.md) to understand project specifications
+   - Familiarize yourself with functional and non-functional requirements
+
+2. **Fork and Clone**
    ```bash
    git clone https://github.com/your-username/Nexus.git
    cd Nexus
    ```
 
-2. **Set Up Development Environment**
+3. **Set Up Development Environment**
    ```bash
    # Create virtual environment
    python -m venv venv
@@ -30,7 +34,7 @@ Thank you for your interest in contributing to Nexus! This document provides gui
    pip install -e .
    ```
 
-3. **Install Pre-commit Hooks**
+4. **Install Pre-commit Hooks**
    ```bash
    pre-commit install
    ```
@@ -324,6 +328,7 @@ When requesting features, include:
 
 ### Getting Help
 
+- **Requirements**: Review the [Requirements](REQUIREMENTS.md) for project specifications
 - **Documentation**: Check existing documentation first
 - **Issues**: Search existing issues before creating new ones
 - **Discussions**: Use GitHub Discussions for questions
