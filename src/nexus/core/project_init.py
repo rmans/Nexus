@@ -343,15 +343,21 @@ Use `nexus serve-docs` to view documentation locally.
     
     def _create_config(self):
         """Create project configuration."""
+        from nexus.core.updater import ProjectUpdater
+        
         # Update configuration with project-specific values
         updates = {
             "nexus": {
+                "version": "0.1.0",
+                "template_version": ProjectUpdater.CURRENT_TEMPLATE_VERSION,
                 "docs_directory": self.docs_dir,
                 "initialized": True,
-                "template": self.template or "default"
+                "template": self.template or "default",
+                "cursor_integration": True
             },
             "project": {
                 "name": self.project_root.name,
+                "type": "unknown",
                 "description": f"AI-assisted development project: {self.project_root.name}"
             }
         }

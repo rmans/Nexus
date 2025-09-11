@@ -55,6 +55,13 @@ def show_status(detailed=False, output_json=False):
     cursor_status = "✅ Enabled" if cursor_integration else "❌ Disabled"
     table.add_row("Cursor Integration", cursor_status, "Rules in .cursor/rules/")
     
+    # Update status
+    from nexus.core.updater import check_project_needs_update
+    if check_project_needs_update():
+        table.add_row("Updates", "⚠️ Available", "Run 'nexus update-project'")
+    else:
+        table.add_row("Updates", "✅ Current", "Project files up to date")
+    
     # Documentation status
     docs_path = Path(docs_dir)
     if docs_path.exists():

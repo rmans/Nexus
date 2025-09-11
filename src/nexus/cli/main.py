@@ -63,6 +63,32 @@ def status(ctx, detailed, json):
     show_status(detailed=detailed, output_json=json)
 
 
+@main.command("update-project")
+@click.option('--force', is_flag=True, help='Force update without confirmation')
+@click.option('--check-only', is_flag=True, help='Only check if update is needed')
+@click.pass_context
+def update_project(ctx, force, check_only):
+    """Update project files to latest Nexus version.
+    
+    Updates Cursor rules, instruction files, and documentation scaffolds
+    to the latest version without affecting your generated content.
+    """
+    from nexus.core.updater import ProjectUpdater
+    
+    updater = ProjectUpdater()
+    
+    if check_only:
+        needs_update = updater.check_needs_update()
+        if needs_update:
+            console.print("🔄 Project files need updating", style="yellow")
+            console.print("Run 'nexus update-project' to update", style="blue")
+        else:
+            console.print("✅ Project files are up to date", style="green")
+        return
+    
+    updater.update_project_files(force=force)
+
+
 @main.command("list-commands")
 @click.option('--category', help='Filter by command category')
 @click.option('--json', is_flag=True, help='Output in JSON format')

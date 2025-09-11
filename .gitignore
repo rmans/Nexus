@@ -210,3 +210,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Nexus system files (ignore - these are tooling)
+.nexus/
+.cursor/
+
+# Keep nexus_docs/ - this is project content that should be committed
+# Add any generated files you want to ignore:
+# nexus_docs/generated/
+# nexus_docs/temp/
