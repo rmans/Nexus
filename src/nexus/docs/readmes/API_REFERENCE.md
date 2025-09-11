@@ -7,7 +7,7 @@ This document provides detailed information about the Nexus API, commands, and i
 ### Basic Usage
 
 ```bash
-python -m nexus [OPTIONS] COMMAND [ARGS]...
+nexus [OPTIONS] COMMAND [ARGS]...
 ```
 
 ### Global Options
@@ -24,28 +24,28 @@ python -m nexus [OPTIONS] COMMAND [ARGS]...
 
 #### Core Commands
 
-##### `init`
+##### `init-project`
 Initialize a new Nexus project or workspace.
 
 ```bash
-python -m nexus init [OPTIONS]
+nexus init-project [OPTIONS]
 ```
 
 **Options:**
 - `--force`: Overwrite existing configuration
 - `--template`: Use specific template
-- `--directory`: Target directory for initialization
+- `--docs-dir`: Documentation directory name (default: nexus_docs)
 
 **Example:**
 ```bash
-python -m nexus init --template basic --directory ./my-project
+nexus init-project --template basic --docs-dir my-docs
 ```
 
 ##### `status`
 Show current project status and configuration.
 
 ```bash
-python -m nexus status [OPTIONS]
+nexus status [OPTIONS]
 ```
 
 **Options:**
@@ -54,14 +54,30 @@ python -m nexus status [OPTIONS]
 
 **Example:**
 ```bash
-python -m nexus status --detailed
+nexus status --detailed
+```
+
+##### `update-project`
+Update project files to latest Nexus version.
+
+```bash
+nexus update-project [OPTIONS]
+```
+
+**Options:**
+- `--force`: Force update without confirmation
+- `--check-only`: Only check if update is needed
+
+**Example:**
+```bash
+nexus update-project --force
 ```
 
 ##### `list-commands`
 List all available commands.
 
 ```bash
-python -m nexus list-commands [OPTIONS]
+nexus list-commands [OPTIONS]
 ```
 
 **Options:**
@@ -142,7 +158,16 @@ python -m nexus serve-docs --port 8080
 
 ## Configuration
 
-### Configuration File
+Nexus uses a hybrid configuration system with multiple layers and priority order:
+
+### Configuration Priority
+
+1. **Main Config** (`config.yaml`) - Core project settings
+2. **Environment Config** (`src/nexus/docs/configs/environments/{env}.yaml`) - Environment-specific overrides
+3. **Runtime Config** (`.nexus/config.json`) - Runtime changes
+4. **Environment Variables** (`NEXUS_*`) - System environment overrides
+
+### Main Configuration File
 
 The main configuration is stored in `config.yaml`:
 
@@ -153,15 +178,24 @@ project:
   version: "1.0.0"
   description: "A modular project framework"
 
+environment: "development"
+
+# Directory settings
+directories:
+  docs: "generated-docs"
+  cache: ".nexus/cache"
+  logs: ".nexus/logs"
+
 # Logging configuration
 logging:
   level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: "nexus.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
 
 # Documentation settings
 documentation:
-  output_dir: "generated-docs"
   formats: ["html", "markdown"]
   auto_generate: true
 
@@ -170,20 +204,85 @@ execution:
   max_parallel: 4
   timeout: 300
   retry_attempts: 3
+
+# Server settings
+server:
+  host: "localhost"
+  port: 8000
+
+# Feature flags
+features:
+  auto_reload: true
+  debug_mode: false
+  experimental_features: false
 ```
+
+### Environment-Specific Configurations
+
+Environment-specific configurations are stored in `src/nexus/docs/configs/environments/`:
+
+- `development.yaml` - Development environment settings
+- `testing.yaml` - Test environment settings
+- `staging.yaml` - Staging environment settings
+- `production.yaml` - Production environment settings
 
 ### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `NEXUS_CONFIG` | Path to configuration file | `config.yaml` |
-| `NEXUS_LOG_LEVEL` | Logging level | `INFO` |
+| `NEXUS_ENV` | Environment (development, testing, staging, production) | `development` |
 | `NEXUS_DEBUG` | Enable debug mode | `false` |
-| `NEXUS_OUTPUT_DIR` | Default output directory | `./output` |
+| `NEXUS_LOG_LEVEL` | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) | `INFO` |
+| `NEXUS_MAX_PARALLEL` | Maximum parallel processes | `4` |
+| `NEXUS_TIMEOUT` | Execution timeout in seconds | `300` |
+| `NEXUS_DOCS_DIR` | Documentation directory | `generated-docs` |
+| `NEXUS_CACHE_DIR` | Cache directory | `.nexus/cache` |
+| `NEXUS_LOGS_DIR` | Logs directory | `.nexus/logs` |
+| `NEXUS_SERVER_HOST` | Server host | `localhost` |
+| `NEXUS_SERVER_PORT` | Server port | `8000` |
+| `NEXUS_FEATURE_*` | Feature flags (e.g., `NEXUS_FEATURE_AUTO_RELOAD=true`) | - |
 
 ## Python API
 
 ### Core Classes
+
+#### `HybridConfigManager`
+
+Enhanced configuration manager with hybrid loading and priority support.
+
+```python
+from nexus.core.hybrid_config import HybridConfigManager, get_config, is_development
+
+# Initialize configuration manager
+config_manager = HybridConfigManager()
+
+# Get configuration
+config = get_config()
+
+# Check environment
+if is_development():
+    enable_debug_features()
+
+# Get specific values
+docs_dir = config_manager.get_docs_dir()
+log_level = config_manager.get_log_level()
+```
+
+#### `ProjectUpdater`
+
+Smart update system for project files.
+
+```python
+from nexus.core.updater import ProjectUpdater
+
+# Initialize updater
+updater = ProjectUpdater()
+
+# Check if update is needed
+if updater.check_needs_update():
+    print("Project files need updating")
+    updater.update_project_files(force=True)
+```
 
 #### `NexusProject`
 
@@ -235,23 +334,61 @@ generator.generate(output_dir="./docs", format="html")
 
 ### Utility Functions
 
-#### `load_config(config_path)`
-
-Load configuration from file.
+#### Configuration Functions
 
 ```python
-from nexus.core import load_config
+from nexus.core.hybrid_config import (
+    get_config, 
+    is_development, 
+    is_production, 
+    is_debug,
+    get_docs_dir,
+    get_templates_dir,
+    validate_config
+)
 
-config = load_config("config.yaml")
+# Get current configuration
+config = get_config()
+
+# Environment checks
+if is_development():
+    enable_debug_features()
+elif is_production():
+    optimize_for_performance()
+
+# Get directory paths
+docs_dir = get_docs_dir()
+templates_dir = get_templates_dir()
+
+# Validate configuration
+errors = validate_config()
+if errors:
+    print(f"Configuration errors: {errors}")
 ```
 
-#### `setup_logging(level, format)`
-
-Configure logging for the application.
+#### Update Functions
 
 ```python
-from nexus.core import setup_logging
+from nexus.core.updater import check_project_needs_update, ProjectUpdater
 
+# Check if update is needed
+if check_project_needs_update():
+    print("Project files need updating")
+
+# Update project files
+updater = ProjectUpdater()
+updater.update_project_files(force=True)
+```
+
+#### Legacy Functions
+
+```python
+from nexus.core import load_config, setup_logging
+
+# Load configuration (legacy)
+config = load_config("config.yaml")
+
+# Setup logging
 setup_logging(level="DEBUG", format="%(levelname)s: %(message)s")
 ```
 

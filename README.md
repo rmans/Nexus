@@ -39,9 +39,11 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 - 🏗️ **Modular Architecture** - Clean separation of concerns with organized package structure
 - 📖 **Comprehensive Documentation** - Auto-generated docs with modular README sections
 - 🧪 **Testing Infrastructure** - Built-in testing framework with organized test structure
-- ⚙️ **Configuration Management** - Flexible configuration system with environment support
-- 🔄 **Command Interface** - CLI tools for project management and execution
+- ⚙️ **Hybrid Configuration System** - Multi-layer configuration with environment-specific overrides
+- 🔄 **Smart Update System** - Automatic detection and seamless updates of project files
+- 🎯 **Cursor Integration** - Built-in support for Cursor AI assistant with rule management
 - 📊 **Documentation Generation** - Automated documentation generation from code
+- 🌍 **Environment Management** - Development, testing, staging, and production configurations
 
 ## Installation
 
@@ -61,31 +63,96 @@ pip install -r requirements.txt
 ## Basic Usage
 
 ```bash
-# Initialize a new project
-python -m nexus init
+# Install Nexus
+pip install nexus-context
 
-# Check project status
-python -m nexus status
+# Initialize a new project
+nexus init-project
+
+# Check project status and updates
+nexus status
+
+# Update project files to latest version
+nexus update-project
 
 # Generate documentation
-python -m nexus generate-docs
+nexus generate-docs
 
-# Run tests
-python -m pytest test/
+# Serve documentation locally
+nexus serve-docs
+
+# Run comprehensive tests
+nexus test-all
+```
+
+## Configuration
+
+Nexus uses a hybrid configuration system with multiple layers:
+
+### Main Configuration (`config.yaml`)
+```yaml
+project:
+  name: "My Project"
+  version: "1.0.0"
+  description: "AI-assisted development project"
+
+environment: "development"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+features:
+  auto_reload: true
+  debug_mode: false
+  experimental_features: false
+```
+
+### Environment-Specific Configs
+- `src/nexus/docs/configs/environments/development.yaml`
+- `src/nexus/docs/configs/environments/testing.yaml`
+- `src/nexus/docs/configs/environments/staging.yaml`
+- `src/nexus/docs/configs/environments/production.yaml`
+
+### Environment Variables
+```bash
+# Override any configuration with NEXUS_* environment variables
+export NEXUS_ENV=production
+export NEXUS_DEBUG=true
+export NEXUS_LOG_LEVEL=DEBUG
+export NEXUS_FEATURE_AUTO_RELOAD=true
 ```
 
 ## Project Structure
 
 ```
 Nexus/
+├── config.yaml                # Main configuration (discoverable in root)
+├── .env.example               # Environment variables template
 ├── src/nexus/                 # Main package
-│   ├── commands/              # CLI commands
+│   ├── cli/                   # CLI commands and interface
 │   ├── core/                  # Core functionality
-│   ├── docs/readmes/          # Modular documentation
+│   │   ├── config.py          # Configuration management
+│   │   ├── hybrid_config.py   # Hybrid configuration system
+│   │   ├── updater.py         # Smart update system
+│   │   └── status.py          # Project status management
+│   ├── docs/                  # Documentation system
+│   │   ├── readmes/           # Modular documentation
+│   │   └── configs/           # Configuration structure
+│   │       ├── environments/  # Environment-specific configs
+│   │       ├── templates/     # Configuration templates
+│   │       ├── schemas/       # Validation schemas
+│   │       └── examples/      # Usage examples
 │   └── instructions/          # Instruction definitions
-├── test/                      # Test files
-├── generated-docs/            # Auto-generated documentation
-└── venv/                      # Virtual environment
+├── .nexus/                    # Runtime configuration
+│   ├── config.json           # Runtime overrides
+│   ├── cache/                # Cache directory
+│   └── logs/                 # Log files
+├── .cursor/                   # Cursor AI integration
+│   └── rules/                # Cursor rules and commands
+├── nexus_docs/               # Project documentation
+├── test/                     # Test files
+└── venv/                     # Virtual environment
 ```
 
 ## Development

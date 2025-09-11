@@ -10,16 +10,23 @@ This guide will help you get up and running with the Nexus project quickly.
 
 ## Installation
 
-### 1. Clone the Repository
+### Option 1: Install from PyPI (Recommended)
 
 ```bash
-git clone <repository-url>
-cd Nexus
+# Install Nexus globally
+pip install nexus-context
+
+# Verify installation
+nexus --version
 ```
 
-### 2. Set Up Virtual Environment
+### Option 2: Development Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/rmans/Nexus.git
+cd Nexus
+
 # Create virtual environment
 python -m venv venv
 
@@ -28,69 +35,97 @@ python -m venv venv
 source venv/bin/activate
 # On Windows:
 # venv\Scripts\activate
-```
 
-### 3. Install Dependencies
-
-```bash
-# Install project dependencies
-pip install -r requirements.txt
-
-# Or if using development dependencies
-pip install -r requirements-dev.txt
+# Install in development mode
+pip install -e .
 ```
 
 ## Quick Start
 
-### 1. Verify Installation
+### 1. Initialize a New Project
 
 ```bash
-# Check if Nexus is properly installed
-python -m nexus --version
+# Create a new Nexus project
+nexus init-project
+
+# Check project status
+nexus status
+
+# Update project files to latest version
+nexus update-project
 ```
 
-### 2. Run Basic Commands
+### 2. Explore Available Commands
 
 ```bash
 # Get help
-python -m nexus --help
+nexus --help
 
 # List available commands
-python -m nexus list-commands
+nexus list-commands
+
+# Check project status with details
+nexus status --detailed
 ```
 
-### 3. Run Tests
+### 3. Generate and Serve Documentation
 
 ```bash
-# Run all tests
-python -m pytest test/
+# Generate project documentation
+nexus generate-docs
 
-# Run specific test category
-python -m pytest test/scripts/
+# Serve documentation locally
+nexus serve-docs
+
+# Run comprehensive tests
+nexus test-all
 ```
 
 ## Configuration
 
+### Hybrid Configuration System
+
+Nexus uses a hybrid configuration system with multiple layers:
+
+1. **Main Config** (`config.yaml`) - Core project settings in project root
+2. **Environment Config** - Environment-specific overrides
+3. **Runtime Config** (`.nexus/config.json`) - Runtime changes
+4. **Environment Variables** (`NEXUS_*`) - System environment overrides
+
 ### Environment Setup
 
-1. Copy the example configuration file:
-   ```bash
-   cp config.example.yaml config.yaml
-   ```
+1. **Main Configuration**: Edit `config.yaml` in your project root
+2. **Environment Variables**: Copy `.env.example` to `.env` and customize
+3. **Environment-Specific**: Modify files in `src/nexus/docs/configs/environments/`
 
-2. Edit `config.yaml` with your specific settings
+### Configuration Examples
 
-### First Run
+```yaml
+# config.yaml
+project:
+  name: "My Project"
+  version: "1.0.0"
+  description: "AI-assisted development project"
 
-1. Initialize the project:
-   ```bash
-   python -m nexus init
-   ```
+environment: "development"
 
-2. Verify setup:
-   ```bash
-   python -m nexus status
-   ```
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+features:
+  auto_reload: true
+  debug_mode: false
+  experimental_features: false
+```
+
+```bash
+# .env
+NEXUS_ENV=development
+NEXUS_DEBUG=true
+NEXUS_LOG_LEVEL=DEBUG
+NEXUS_FEATURE_AUTO_RELOAD=true
+```
 
 ## Development Setup
 
