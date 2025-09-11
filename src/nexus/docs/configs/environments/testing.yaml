@@ -1,0 +1,17 @@
+# Testing Environment Configuration
+extends: "../../config.yaml"
+
+logging:
+  level: "WARNING"
+
+execution:
+  max_parallel: 1
+  timeout: 120
+
+documentation:
+  auto_generate: false
+
+features:
+  debug_mode: false
+  auto_reload: false
+  experimental_features: false

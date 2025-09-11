@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Nexus Configuration Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},
+        "description": {"type": "string"},
+        "author": {"type": "string"},
+        "license": {"type": "string"}
+      },
+      "required": ["name", "version"]
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["development", "testing", "staging", "production"]
+    },
+    "directories": {
+      "type": "object",
+      "properties": {
+        "docs": {"type": "string"},
+        "cache": {"type": "string"},
+        "logs": {"type": "string"},
+        "templates": {"type": "string"}
+      }
+    },
+    "logging": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+        },
+        "format": {"type": "string"},
+        "file": {"type": "string"},
+        "max_size": {"type": "integer", "minimum": 1024},
+        "backup_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "properties": {
+        "formats": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["html", "markdown", "pdf"]}
+        },
+        "auto_generate": {"type": "boolean"},
+        "include_code": {"type": "boolean"},
+        "include_diagrams": {"type": "boolean"}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "max_parallel": {"type": "integer", "minimum": 1, "maximum": 32},
+        "timeout": {"type": "integer", "minimum": 1},
+        "retry_attempts": {"type": "integer", "minimum": 0, "maximum": 10}
+      }
+    },
+    "server": {
+      "type": "object",
+      "properties": {
+        "host": {"type": "string"},
+        "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "auto_reload": {"type": "boolean"}
+      }
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "auto_reload": {"type": "boolean"},
+        "debug_mode": {"type": "boolean"},
+        "experimental_features": {"type": "boolean"}
+      },
+      "additionalProperties": {"type": "boolean"}
+    }
+  },
+  "required": ["project", "environment"]
+}

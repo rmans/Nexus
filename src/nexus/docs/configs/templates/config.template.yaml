@@ -1,0 +1,39 @@
+# Configuration Template
+# Use this template to create new configuration files
+
+project:
+  name: "${PROJECT_NAME}"
+  version: "${PROJECT_VERSION}"
+  description: "${PROJECT_DESCRIPTION}"
+
+environment: "${ENVIRONMENT}"
+
+directories:
+  docs: "${DOCS_DIR}"
+  cache: "${CACHE_DIR}"
+  logs: "${LOGS_DIR}"
+
+logging:
+  level: "${LOG_LEVEL}"
+  format: "${LOG_FORMAT}"
+  file: "${LOG_FILE}"
+  max_size: ${MAX_LOG_SIZE}
+  backup_count: ${BACKUP_COUNT}
+
+documentation:
+  formats: ["${DOC_FORMATS}"]
+  auto_generate: ${AUTO_GENERATE_DOCS}
+
+execution:
+  max_parallel: ${MAX_PARALLEL}
+  timeout: ${TIMEOUT}
+  retry_attempts: ${RETRY_ATTEMPTS}
+
+server:
+  host: "${SERVER_HOST}"
+  port: ${SERVER_PORT}
+
+features:
+  auto_reload: ${AUTO_RELOAD}
+  debug_mode: ${DEBUG_MODE}
+  experimental_features: ${EXPERIMENTAL_FEATURES}

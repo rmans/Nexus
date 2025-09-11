@@ -1,0 +1,21 @@
+# Staging Environment Configuration
+extends: "../../config.yaml"
+
+logging:
+  level: "INFO"
+
+execution:
+  max_parallel: 8
+  timeout: 300
+
+documentation:
+  auto_generate: false
+
+features:
+  debug_mode: false
+  auto_reload: false
+  experimental_features: true
+
+server:
+  host: "0.0.0.0"
+  port: 8080

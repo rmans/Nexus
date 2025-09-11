@@ -8,23 +8,39 @@ from rich.console import Console
 
 console = Console()
 
+# Import hybrid config for enhanced functionality
+try:
+    from .hybrid_config import HybridConfigManager, get_config as get_hybrid_config
+    HYBRID_AVAILABLE = True
+except ImportError:
+    HYBRID_AVAILABLE = False
+
 class ConfigManager:
     """Manage Nexus project configuration."""
     
-    def __init__(self, project_root: Optional[Path] = None):
+    def __init__(self, project_root: Optional[Path] = None, use_hybrid: bool = True):
         """Initialize configuration manager.
         
         Args:
             project_root: Root directory of the project
+            use_hybrid: Whether to use hybrid configuration system if available
         """
         self.project_root = project_root or Path.cwd()
         self.nexus_dir = self.project_root / ".nexus"
         self.config_file = self.nexus_dir / "config.json"
         self._config = None
+        self.use_hybrid = use_hybrid and HYBRID_AVAILABLE
+        
+        # Initialize hybrid config manager if available
+        if self.use_hybrid:
+            self._hybrid_manager = HybridConfigManager(self.project_root)
     
     @property
     def config(self) -> Dict[str, Any]:
         """Get current configuration."""
+        if self.use_hybrid:
+            return self._hybrid_manager.config
+        
         if self._config is None:
             self._config = self.load_config()
         return self._config
@@ -178,6 +194,9 @@ class ConfigManager:
         Returns:
             Path to documentation directory
         """
+        if self.use_hybrid:
+            return self._hybrid_manager.get_docs_dir()
+        
         docs_dir = self.get("nexus.docs_directory", "nexus_docs")
         return self.project_root / docs_dir
     

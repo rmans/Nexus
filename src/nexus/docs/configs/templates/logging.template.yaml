@@ -1,0 +1,20 @@
+# Logging Configuration Template
+# Use this template for logging-specific configuration
+
+logging:
+  level: "${LOG_LEVEL}"
+  format: "${LOG_FORMAT}"
+  file: "${LOG_FILE}"
+  max_size: ${MAX_LOG_SIZE}
+  backup_count: ${BACKUP_COUNT}
+  
+  handlers:
+    file:
+      enabled: true
+      level: "${FILE_LOG_LEVEL}"
+    console:
+      enabled: ${CONSOLE_LOG_ENABLED}
+      level: "${CONSOLE_LOG_LEVEL}"
+    syslog:
+      enabled: ${SYSLOG_ENABLED}
+      facility: "${SYSLOG_FACILITY}"

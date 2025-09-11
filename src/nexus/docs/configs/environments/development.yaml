@@ -1,0 +1,17 @@
+# Development Environment Configuration
+extends: "../../config.yaml"
+
+logging:
+  level: "DEBUG"
+
+execution:
+  max_parallel: 2
+  timeout: 600
+
+features:
+  debug_mode: true
+  auto_reload: true
+  experimental_features: true
+
+server:
+  auto_reload: true

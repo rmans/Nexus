@@ -1,0 +1,21 @@
+# Production Environment Configuration
+extends: "../../config.yaml"
+
+logging:
+  level: "ERROR"
+
+execution:
+  max_parallel: 16
+  timeout: 300
+
+documentation:
+  auto_generate: false
+
+features:
+  debug_mode: false
+  auto_reload: false
+  experimental_features: false
+
+server:
+  host: "0.0.0.0"
+  port: 80

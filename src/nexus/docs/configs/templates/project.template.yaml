@@ -1,0 +1,33 @@
+# Project Configuration Template
+# Use this template for project-specific configuration
+
+project:
+  name: "${PROJECT_NAME}"
+  version: "${PROJECT_VERSION}"
+  description: "${PROJECT_DESCRIPTION}"
+  author: "${PROJECT_AUTHOR}"
+  license: "${PROJECT_LICENSE}"
+
+environment: "${ENVIRONMENT}"
+
+directories:
+  docs: "${DOCS_DIR}"
+  cache: "${CACHE_DIR}"
+  logs: "${LOGS_DIR}"
+  templates: "${TEMPLATES_DIR}"
+
+documentation:
+  formats: ["${DOC_FORMATS}"]
+  auto_generate: ${AUTO_GENERATE_DOCS}
+  include_code: ${INCLUDE_CODE}
+  include_diagrams: ${INCLUDE_DIAGRAMS}
+
+execution:
+  max_parallel: ${MAX_PARALLEL}
+  timeout: ${TIMEOUT}
+  retry_attempts: ${RETRY_ATTEMPTS}
+
+features:
+  auto_reload: ${AUTO_RELOAD}
+  debug_mode: ${DEBUG_MODE}
+  experimental_features: ${EXPERIMENTAL_FEATURES}
