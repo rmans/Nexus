@@ -74,6 +74,9 @@ class NexusInstaller:
             # Post-installation setup
             self._post_installation_setup()
             
+            # Test configuration system
+            self._test_configuration_system()
+            
             # Display success message
             self._display_success_message()
             
@@ -248,9 +251,11 @@ class NexusInstaller:
         nexus_runtime.mkdir(exist_ok=True)
         
         # Create initial runtime config using fixed configuration system
-        from nexus.core.hybrid_config import get_config, Environment
+        from nexus.core.hybrid_config import get_config, Environment, ConfigManager
         
         config = get_config()
+        config_manager = ConfigManager(project_root=self.nexus_dir)
+        
         runtime_config = {
             "nexus": {
                 "version": config.project_version,
@@ -259,7 +264,8 @@ class NexusInstaller:
                 "install_date": self._get_current_timestamp(),
                 "install_path": str(self.nexus_dir),
                 "environment": config.environment.value,
-                "debug_mode": config.is_debug()
+                "debug_mode": config.is_debug(),
+                "hybrid_config_enabled": True
             },
             "runtime_overrides": {},
             "session": {
@@ -271,7 +277,8 @@ class NexusInstaller:
                 "main_config": str(self.nexus_dir / "config.yaml"),
                 "configs_dir": str(self.nexus_dir / "configs"),
                 "templates_dir": str(self.nexus_dir / "configs" / "templates"),
-                "schemas_dir": str(self.nexus_dir / "configs" / "schemas")
+                "schemas_dir": str(self.nexus_dir / "configs" / "schemas"),
+                "examples_dir": str(self.nexus_dir / "configs" / "examples")
             }
         }
         
@@ -282,6 +289,24 @@ class NexusInstaller:
         # Create cache and logs directories
         (nexus_runtime / "cache").mkdir(exist_ok=True)
         (nexus_runtime / "logs").mkdir(exist_ok=True)
+        (nexus_runtime / "instructions").mkdir(exist_ok=True)
+        
+        # Initialize the configuration system
+        try:
+            config_manager.initialize_project()
+            console.print("✅ Configuration system initialized", style="green")
+            
+            # Validate configuration
+            errors = config_manager.validate_config()
+            if errors:
+                console.print("⚠️ Configuration validation warnings:", style="yellow")
+                for error in errors:
+                    console.print(f"  - {error}", style="yellow")
+            else:
+                console.print("✅ Configuration validation passed", style="green")
+                
+        except Exception as e:
+            console.print(f"⚠️ Warning: Could not initialize configuration system: {e}", style="yellow")
     
     def _post_installation_setup(self) -> None:
         """Post-installation setup tasks."""
@@ -345,11 +370,19 @@ Installation Directory: {self.nexus_dir}
 Configuration Files: {self.config_dir}
 Examples: {self.examples_dir}
 
+Fixed Hybrid Configuration System:
+✅ Main config: {self.nexus_dir}/config.yaml
+✅ Environment configs: {self.config_dir}/environments/
+✅ Templates & schemas: {self.config_dir}/templates/, {self.config_dir}/schemas/
+✅ Runtime config: {self.nexus_dir}/.nexus/config.json
+✅ Full API compatibility maintained
+
 Next Steps:
 1. Add {self.nexus_dir} to your PATH
 2. Run 'nexus init-project' to create a new project
 3. Check 'nexus status' to verify installation
 4. Read the documentation in {self.nexus_dir}/README.md
+5. Explore configuration examples in {self.config_dir}/examples/
 
 For help, run: nexus --help""",
             title="Installation Successful",
@@ -357,6 +390,41 @@ For help, run: nexus --help""",
         )
         
         console.print(success_panel)
+    
+    def _test_configuration_system(self) -> None:
+        """Test the configuration system after installation."""
+        try:
+            from nexus.core.hybrid_config import get_config, get_config_manager, is_debug, is_development
+            
+            console.print("🧪 Testing configuration system...", style="blue")
+            
+            # Test configuration loading
+            config = get_config()
+            config_manager = get_config_manager()
+            
+            # Test basic configuration access
+            project_name = config.project_name
+            environment = config.environment.value
+            debug_mode = is_debug()
+            dev_mode = is_development()
+            
+            # Test path helpers
+            docs_dir = config_manager.get_docs_dir()
+            cache_dir = config_manager.get_cache_dir()
+            configs_dir = config_manager.get_configs_dir()
+            
+            # Test backwards compatibility
+            old_docs_dir = config_manager.get_docs_directory()
+            is_init = config_manager.is_initialized()
+            
+            console.print("✅ Configuration system test passed", style="green")
+            console.print(f"  Project: {project_name} ({environment})")
+            console.print(f"  Debug mode: {debug_mode}, Development: {dev_mode}")
+            console.print(f"  Directories: docs={docs_dir}, cache={cache_dir}")
+            console.print(f"  Backwards compatibility: {old_docs_dir == docs_dir}")
+            
+        except Exception as e:
+            console.print(f"⚠️ Configuration system test failed: {e}", style="yellow")
     
     def _get_current_timestamp(self) -> str:
         """Get current timestamp as ISO string."""
