@@ -219,3 +219,7 @@ __marimo__/
 # Add any generated files you want to ignore:
 # nexus_docs/generated/
 # nexus_docs/temp/
+
+# Test results and temporary files
+test_results/
+*.log

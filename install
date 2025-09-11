@@ -1,0 +1,40 @@
+#!/bin/bash
+# Nexus Installer - Cross-platform installation script
+# This script detects the platform and runs the appropriate installer
+
+set -e
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INSTALLERS_DIR="$SCRIPT_DIR/installers"
+
+# Detect platform
+case "$(uname -s)" in
+    Linux*)
+        echo "🐧 Detected Linux"
+        INSTALLER="$INSTALLERS_DIR/install.sh"
+        ;;
+    Darwin*)
+        echo "🍎 Detected macOS"
+        INSTALLER="$INSTALLERS_DIR/install-macos.sh"
+        ;;
+    CYGWIN*|MINGW*|MSYS*)
+        echo "🪟 Detected Windows"
+        INSTALLER="$INSTALLERS_DIR/install.bat"
+        ;;
+    *)
+        echo "❓ Unknown platform, trying Python installer"
+        INSTALLER="$INSTALLERS_DIR/install.py"
+        ;;
+esac
+
+# Check if installer exists
+if [ ! -f "$INSTALLER" ]; then
+    echo "❌ Installer not found: $INSTALLER"
+    echo "Available installers:"
+    ls -la "$INSTALLERS_DIR/"
+    exit 1
+fi
+
+echo "🚀 Running installer: $INSTALLER"
+exec "$INSTALLER" "$@"
