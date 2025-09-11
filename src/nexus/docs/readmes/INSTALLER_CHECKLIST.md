@@ -1,6 +1,6 @@
 # Installer Development Checklist
 
-This checklist helps ensure your installer meets all requirements and provides a smooth user experience.
+This checklist helps ensure your installer meets all requirements and provides a smooth user experience with the hybrid configuration system and smart update features.
 
 ## Pre-Development
 
@@ -33,11 +33,14 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Handle different shell environments
   - [ ] Support virtual environments
 
-- [ ] **Configuration Setup**
-  - [ ] Create initial configuration file
-  - [ ] Set up environment variables
-  - [ ] Configure logging
-  - [ ] Handle user preferences
+- [ ] **Hybrid Configuration Setup**
+  - [ ] Install main configuration file (config.yaml)
+  - [ ] Set up environment-specific configurations
+  - [ ] Install configuration templates and schemas
+  - [ ] Create .env.example template
+  - [ ] Set up runtime configuration directory (.nexus/)
+  - [ ] Configure logging with environment support
+  - [ ] Handle user preferences and feature flags
 
 ### User Experience
 - [ ] **Installation Process**
@@ -46,10 +49,12 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Rollback on failure
   - [ ] Silent installation option
 
-- [ ] **Documentation**
-  - [ ] Install local documentation
+- [ ] **Documentation and Examples**
+  - [ ] Install comprehensive documentation
+  - [ ] Install configuration examples
   - [ ] Provide quick start guide
   - [ ] Include troubleshooting information
+  - [ ] Install usage examples (serve_example.py, docs_example.py)
   - [ ] Link to online resources
 
 ### Platform Support
@@ -64,6 +69,8 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Handle different Python versions
   - [ ] Create macOS package (.pkg)
   - [ ] Support Homebrew installation
+  - [ ] Create application bundle (.app)
+  - [ ] Support different shell environments (zsh, bash)
 
 - [ ] **Linux**
   - [ ] Test on major distributions
@@ -80,11 +87,14 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Test with different Python versions
   - [ ] Test with different user permissions
 
-- [ ] **Upgrade Testing**
+- [ ] **Smart Update Testing**
   - [ ] Test upgrading from previous versions
   - [ ] Test downgrading to previous versions
-  - [ ] Handle configuration migration
+  - [ ] Test hybrid configuration migration
+  - [ ] Test template version updates
+  - [ ] Test environment-specific configuration updates
   - [ ] Test dependency updates
+  - [ ] Test auto-update mechanism
 
 - [ ] **Uninstallation Testing**
   - [ ] Test complete removal
@@ -104,6 +114,9 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Verify build tools work
   - [ ] Test debugging capabilities
   - [ ] Verify documentation access
+  - [ ] Test hybrid configuration system
+  - [ ] Verify smart update system
+  - [ ] Test Cursor integration
 
 ## Quality Assurance
 
@@ -113,6 +126,9 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Smoke tests for core functionality
   - [ ] Performance testing
   - [ ] Security scanning
+  - [ ] Hybrid configuration validation
+  - [ ] Environment-specific configuration testing
+  - [ ] Smart update system verification
 
 - [ ] **Documentation Review**
   - [ ] Installation instructions are clear
