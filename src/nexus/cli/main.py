@@ -176,5 +176,113 @@ def validate(ctx, fix, strict):
     validate_project(fix=fix, strict=strict)
 
 
+@main.command("analyze-content")
+@click.option('--output', help='Output file for analysis results')
+@click.option('--export-templates', is_flag=True, help='Export templates from analysis')
+@click.pass_context
+def analyze_content(ctx, output, export_templates):
+    """Analyze existing documentation content for patterns and insights.
+    
+    Examines your documentation to find common patterns, suggest templates,
+    and provide insights for improvement.
+    """
+    from nexus.core.content_analyzer import ContentAnalyzer
+    
+    console.print("🔍 Analyzing documentation content...", style="blue")
+    
+    analyzer = ContentAnalyzer()
+    results = analyzer.analyze_existing_content()
+    
+    # Display summary
+    console.print(f"📊 Found {len(results['patterns'])} patterns across {len(results['sections'])} sections", style="green")
+    
+    if results['insights']['template_suggestions']:
+        console.print("\n💡 Template Suggestions:", style="blue")
+        for suggestion in results['insights']['template_suggestions']:
+            console.print(f"  • {suggestion['description']} ({suggestion['count']} instances)", style="cyan")
+    
+    # Export results if requested
+    if output:
+        output_path = Path(output)
+        analyzer.export_analysis(output_path)
+    
+    # Export templates if requested
+    if export_templates:
+        templates_dir = Path("nexus_docs/templates")
+        analyzer.create_templates_from_patterns(templates_dir)
+
+
+@main.command("migrate-content")
+@click.option('--preserve-original', is_flag=True, help='Keep original files after migration')
+@click.option('--report', help='Generate migration report file')
+@click.pass_context
+def migrate_content(ctx, preserve_original, report):
+    """Migrate existing generated-docs content to new structure.
+    
+    Moves and enhances content from generated-docs/ to nexus_docs/
+    with improved structure and metadata.
+    """
+    from nexus.core.content_migrator import ContentMigrator
+    
+    console.print("🔄 Migrating content to new structure...", style="blue")
+    
+    migrator = ContentMigrator()
+    results = migrator.migrate_content(preserve_original=preserve_original)
+    
+    console.print(f"✅ Migrated {results['migrated']} files", style="green")
+    if results['errors'] > 0:
+        console.print(f"⚠️  {results['errors']} errors occurred", style="yellow")
+    
+    # Generate report if requested
+    if report:
+        report_path = Path(report)
+        migrator.create_migration_report(report_path)
+
+
+@main.command("enhance-content")
+@click.option('--preview', is_flag=True, help='Preview enhancements without applying')
+@click.option('--apply', is_flag=True, help='Apply enhancement suggestions')
+@click.option('--report', help='Generate enhancement report file')
+@click.option('--target-dir', help='Directory to enhance (defaults to nexus_docs)')
+@click.pass_context
+def enhance_content(ctx, preview, apply, report, target_dir):
+    """Enhance documentation content quality.
+    
+    Analyzes content and suggests improvements for better readability,
+    structure, and completeness.
+    """
+    from nexus.core.content_enhancer import ContentEnhancer
+    
+    if not preview and not apply:
+        console.print("❌ Please specify --preview or --apply", style="red")
+        return
+    
+    target_path = Path(target_dir) if target_dir else None
+    
+    console.print("🔧 Analyzing content for enhancements...", style="blue")
+    
+    enhancer = ContentEnhancer()
+    results = enhancer.analyze_and_enhance(target_path)
+    
+    if not results['suggestions']:
+        console.print("ℹ️  No enhancement suggestions found", style="blue")
+        return
+    
+    # Show summary
+    stats = enhancer.get_enhancement_stats()
+    console.print(f"📊 Found {stats['total']} suggestions across {stats['files_affected']} files", style="green")
+    
+    # Preview or apply enhancements
+    if preview:
+        enhancer.apply_enhancements(dry_run=True)
+    elif apply:
+        enhancer.apply_enhancements(dry_run=False)
+    
+    # Generate report if requested
+    if report:
+        report_path = Path(report)
+        enhancer.create_enhancement_report(report_path)
+
+
 if __name__ == "__main__":
     main()

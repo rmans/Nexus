@@ -26,6 +26,11 @@ def list_available_commands(category=None, output_json=False):
             {"name": "create-instruction", "description": "Create a new instruction template"},
             {"name": "execute-instruction", "description": "Execute an instruction or workflow"},
         ],
+        "content": [
+            {"name": "analyze-content", "description": "Analyze existing documentation content for patterns"},
+            {"name": "migrate-content", "description": "Migrate existing generated-docs content to new structure"},
+            {"name": "enhance-content", "description": "Enhance documentation content quality"},
+        ],
         "system": [
             {"name": "list-commands", "description": "List all available commands"},
         ]
