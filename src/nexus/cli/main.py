@@ -284,5 +284,135 @@ def enhance_content(ctx, preview, apply, report, target_dir):
         enhancer.create_enhancement_report(report_path)
 
 
+@main.command("test-integration")
+@click.option('--output', help='Output file for test results')
+@click.option('--verbose', is_flag=True, help='Show detailed test output')
+@click.pass_context
+def test_integration(ctx, output, verbose):
+    """Run comprehensive integration tests.
+    
+    Tests all system components and their interactions to ensure
+    everything works correctly together.
+    """
+    from nexus.core.integration_tester import IntegrationTester
+    
+    console.print("🧪 Running integration tests...", style="blue")
+    
+    tester = IntegrationTester()
+    results = tester.run_all_tests()
+    
+    # Export results if requested
+    if output:
+        import json
+        output_path = Path(output)
+        output_path.write_text(json.dumps(results, indent=2))
+        console.print(f"📊 Test results exported to {output_path}", style="green")
+    
+    # Exit with error code if tests failed
+    if results["failed"] > 0:
+        console.print(f"❌ {results['failed']} tests failed", style="red")
+        exit(1)
+    else:
+        console.print(f"✅ All {results['passed']} tests passed", style="green")
+
+
+@main.command("test-performance")
+@click.option('--output', help='Output file for performance results')
+@click.option('--large-files', is_flag=True, help='Test with large files')
+@click.pass_context
+def test_performance(ctx, output, large_files):
+    """Run performance tests.
+    
+    Tests system performance under various conditions to ensure
+    it can handle real-world workloads efficiently.
+    """
+    from nexus.core.performance_tester import PerformanceTester
+    
+    console.print("⚡ Running performance tests...", style="blue")
+    
+    tester = PerformanceTester()
+    results = tester.run_performance_tests()
+    
+    # Export results if requested
+    if output:
+        import json
+        output_path = Path(output)
+        output_path.write_text(json.dumps(results, indent=2))
+        console.print(f"📊 Performance results exported to {output_path}", style="green")
+    
+    # Check performance thresholds
+    if results.get("max_duration", 0) > 30:  # 30 seconds threshold
+        console.print("⚠️  Some operations took longer than expected", style="yellow")
+    
+    if results.get("max_memory", 0) > 500:  # 500MB threshold
+        console.print("⚠️  High memory usage detected", style="yellow")
+
+
+@main.command("test-all")
+@click.option('--integration', is_flag=True, help='Run integration tests')
+@click.option('--performance', is_flag=True, help='Run performance tests')
+@click.option('--output', help='Output directory for test results')
+@click.pass_context
+def test_all(ctx, integration, performance, output):
+    """Run all tests (integration and performance).
+    
+    Comprehensive testing suite that validates both functionality
+    and performance of the entire system.
+    """
+    if not integration and not performance:
+        integration = True
+        performance = True
+    
+    output_dir = Path(output) if output else Path("test_results")
+    output_dir.mkdir(exist_ok=True)
+    
+    console.print("🧪 Running comprehensive test suite...", style="bold blue")
+    
+    all_passed = True
+    
+    if integration:
+        console.print("\n" + "="*50, style="blue")
+        console.print("INTEGRATION TESTS", style="bold blue")
+        console.print("="*50, style="blue")
+        
+        from nexus.core.integration_tester import IntegrationTester
+        tester = IntegrationTester()
+        results = tester.run_all_tests()
+        
+        # Save integration results
+        integration_file = output_dir / "integration_results.json"
+        import json
+        integration_file.write_text(json.dumps(results, indent=2))
+        
+        if results["failed"] > 0:
+            all_passed = False
+    
+    if performance:
+        console.print("\n" + "="*50, style="blue")
+        console.print("PERFORMANCE TESTS", style="bold blue")
+        console.print("="*50, style="blue")
+        
+        from nexus.core.performance_tester import PerformanceTester
+        tester = PerformanceTester()
+        results = tester.run_performance_tests()
+        
+        # Save performance results
+        performance_file = output_dir / "performance_results.json"
+        import json
+        performance_file.write_text(json.dumps(results, indent=2))
+    
+    # Final summary
+    console.print("\n" + "="*50, style="bold blue")
+    console.print("TEST SUITE SUMMARY", style="bold blue")
+    console.print("="*50, style="bold blue")
+    
+    if all_passed:
+        console.print("✅ All tests completed successfully", style="green")
+        console.print(f"📊 Results saved to {output_dir}", style="blue")
+    else:
+        console.print("❌ Some tests failed", style="red")
+        exit(1)
+
+
 if __name__ == "__main__":
     main()

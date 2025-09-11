@@ -1,0 +1,53 @@
+{
+  "total_operations": 6,
+  "average_duration": 0.005841064453125,
+  "max_duration": 0.015587091445922852,
+  "min_duration": 0.000652313232421875,
+  "average_memory": 33.99609375,
+  "max_memory": 33.99609375,
+  "total_files_processed": 48,
+  "metrics": [
+    {
+      "operation": "project_initialization",
+      "duration": 0.0036878585815429688,
+      "memory_usage": 0.0,
+      "file_count": 17,
+      "file_size": 8854
+    },
+    {
+      "operation": "document_generation",
+      "duration": 0.015587091445922852,
+      "memory_usage": 0.0,
+      "file_count": 15,
+      "file_size": 5336
+    },
+    {
+      "operation": "content_analysis",
+      "duration": 0.0013532638549804688,
+      "memory_usage": 0.0,
+      "file_count": 10,
+      "file_size": 6547
+    },
+    {
+      "operation": "content_migration",
+      "duration": 0.007924795150756836,
+      "memory_usage": 0.0,
+      "file_count": 5,
+      "file_size": 4424
+    },
+    {
+      "operation": "large_file_analysis",
+      "duration": 0.000652313232421875,
+      "memory_usage": 0.0,
+      "file_count": 1,
+      "file_size": 5243464
+    },
+    {
+      "operation": "memory_usage",
+      "duration": 0.0,
+      "memory_usage": 33.99609375,
+      "file_count": 0,
+      "file_size": 0
+    }
+  ]
+}

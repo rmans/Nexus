@@ -8,6 +8,8 @@ from .templates import TemplateManager
 from .content_analyzer import ContentAnalyzer
 from .content_migrator import ContentMigrator
 from .content_enhancer import ContentEnhancer
+from .integration_tester import IntegrationTester
+from .performance_tester import PerformanceTester
 
 __all__ = [
     "ProjectInitializer", 
@@ -17,5 +19,7 @@ __all__ = [
     "TemplateManager",
     "ContentAnalyzer",
     "ContentMigrator",
-    "ContentEnhancer"
+    "ContentEnhancer",
+    "IntegrationTester",
+    "PerformanceTester"
 ]

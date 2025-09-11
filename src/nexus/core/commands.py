@@ -31,15 +31,15 @@ def list_available_commands(category=None, output_json=False):
             {"name": "migrate-content", "description": "Migrate existing generated-docs content to new structure"},
             {"name": "enhance-content", "description": "Enhance documentation content quality"},
         ],
+        "testing": [
+            {"name": "test-integration", "description": "Run comprehensive integration tests"},
+            {"name": "test-performance", "description": "Run performance tests"},
+            {"name": "test-all", "description": "Run all tests (integration and performance)"},
+        ],
         "system": [
             {"name": "list-commands", "description": "List all available commands"},
         ]
     }
-    
-    if output_json:
-        import json
-        print(json.dumps(commands, indent=2))
-        return
     
     # Filter by category if specified
     if category:
@@ -47,7 +47,12 @@ def list_available_commands(category=None, output_json=False):
             commands = {category: commands[category]}
         else:
             console.print(f"❌ Unknown category: {category}", style="red")
-            return
+            return commands
+    
+    if output_json:
+        import json
+        print(json.dumps(commands, indent=2))
+        return commands
     
     # Display commands table
     table = Table(title="Available Nexus Commands")
@@ -63,3 +68,5 @@ def list_available_commands(category=None, output_json=False):
     
     if not category:
         console.print("\n💡 Use 'nexus list-commands --category <category>' to filter by category", style="dim")
+    
+    return commands

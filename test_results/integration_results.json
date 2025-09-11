@@ -1,0 +1,79 @@
+{
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "skipped": 0,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test_name": "project_init_basic",
+      "status": "PASS",
+      "message": "Basic initialization successful",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "project_init_force",
+      "status": "PASS",
+      "message": "Force reinitialization successful",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "doc_generation_basic",
+      "status": "PASS",
+      "message": "Generated 15 files",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "content_analysis_basic",
+      "status": "PASS",
+      "message": "Found 8 patterns",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "content_migration_basic",
+      "status": "PASS",
+      "message": "Migrated 1 files",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "content_enhancement_basic",
+      "status": "PASS",
+      "message": "Analyzed 0 files",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "config_management_basic",
+      "status": "PASS",
+      "message": "Configuration management working",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "template_system_basic",
+      "status": "PASS",
+      "message": "Found 3 template categories",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "cli_integration_basic",
+      "status": "PASS",
+      "message": "Found 6 command categories",
+      "duration": 0.0,
+      "details": {}
+    },
+    {
+      "test_name": "full_workflow",
+      "status": "PASS",
+      "message": "Complete workflow successful with 16 files",
+      "duration": 0.0,
+      "details": {}
+    }
+  ]
+}
