@@ -1,6 +1,7 @@
 """Nexus CLI main module implementing the API reference design."""
 
 import click
+from pathlib import Path
 from rich.console import Console
 
 console = Console()
@@ -115,7 +116,7 @@ def execute_instruction(ctx, instruction, dry_run, parallel, timeout):
 @main.command("generate-docs")
 @click.option('--output', help='Output directory')
 @click.option('--format', type=click.Choice(['html', 'pdf', 'markdown']), default='markdown', help='Documentation format')
-@click.option('--include', help='Include specific documentation sections')
+@click.option('--include', help='Include specific documentation sections (comma-separated)')
 @click.option('--auto-reload', is_flag=True, help='Auto-reload on changes')
 @click.pass_context
 def generate_docs(ctx, output, format, include, auto_reload):
@@ -128,8 +129,18 @@ def generate_docs(ctx, output, format, include, auto_reload):
     
     console.print("📚 Generating documentation...", style="blue")
     
+    # Parse include parameter
+    include_list = None
+    if include:
+        include_list = [s.strip() for s in include.split(',')]
+    
     generator = DocumentGenerator()
-    generator.generate(output_dir=output, format=format, include=include, auto_reload=auto_reload)
+    generator.generate(
+        output_dir=Path(output) if output else None, 
+        format=format, 
+        include=include_list, 
+        auto_reload=auto_reload
+    )
 
 
 @main.command("serve-docs")

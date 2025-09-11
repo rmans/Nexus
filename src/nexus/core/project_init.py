@@ -3,26 +3,34 @@
 import shutil
 import json
 from pathlib import Path
+from typing import Optional
 from rich.console import Console
+from .config import ConfigManager
+from .templates import TemplateManager
 
 console = Console()
 
 class ProjectInitializer:
     """Initialize Nexus project using existing structure."""
     
-    def __init__(self, docs_dir="nexus_docs", template=None):
+    def __init__(self, docs_dir="nexus_docs", template=None, project_root: Optional[Path] = None):
         """Initialize the project initializer.
         
         Args:
             docs_dir: Name of the documentation directory to create
             template: Template to use for initialization
+            project_root: Root directory of the project
         """
-        self.project_root = Path.cwd()
+        self.project_root = project_root or Path.cwd()
         self.docs_dir = docs_dir
         self.nexus_dir = self.project_root / ".nexus"
         self.cursor_dir = self.project_root / ".cursor"
         self.docs_path = self.project_root / docs_dir
         self.template = template
+        
+        # Initialize managers
+        self.config_manager = ConfigManager(self.project_root)
+        self.template_manager = TemplateManager(self.project_root)
         
         # Get package root for templates
         import nexus
@@ -42,12 +50,15 @@ class ProjectInitializer:
         console.print("🚀 Initializing Nexus project...", style="blue")
         
         # Check if already initialized
-        if self.nexus_dir.exists() and not force:
+        if self.config_manager.is_initialized() and not force:
             console.print("⚠️  Nexus already initialized. Use --force to overwrite.", style="yellow")
             return
         
         # Create directories
         self._create_directories()
+        
+        # Install templates
+        self._install_templates()
         
         # Copy existing instructions
         self._install_instructions()
@@ -61,13 +72,14 @@ class ProjectInitializer:
         # Update gitignore
         self._update_gitignore()
         
-        # Create config
+        # Create and save configuration
         self._create_config()
         
         console.print("✅ Nexus initialization complete!", style="green")
         console.print(f"📁 Documentation directory: {self.docs_dir}/", style="blue")
         console.print("🎯 Cursor rules installed in .cursor/rules/", style="blue")
         console.print("📚 Instructions available in .nexus/instructions/", style="blue")
+        console.print("📝 Templates available in .nexus/templates/", style="blue")
     
     def _create_directories(self):
         """Create necessary directories."""
@@ -75,6 +87,7 @@ class ProjectInitializer:
             self.nexus_dir,
             self.cursor_dir / "rules",
             self.nexus_dir / "instructions",
+            self.nexus_dir / "templates",
             self.nexus_dir / "config",
         ]
         
@@ -82,6 +95,17 @@ class ProjectInitializer:
             directory.mkdir(parents=True, exist_ok=True)
         
         console.print("📁 Created directory structure", style="green")
+    
+    def _install_templates(self):
+        """Install default templates."""
+        # Install default templates
+        self.template_manager.install_default_templates()
+        
+        # Copy existing templates from generated-docs if available
+        source_docs = self.project_root / "generated-docs"
+        if source_docs.exists():
+            self.template_manager.copy_existing_templates(source_docs)
+            console.print("📋 Copied existing templates from generated-docs", style="green")
     
     def _install_instructions(self):
         """Copy existing instructions to .nexus/."""
@@ -319,26 +343,19 @@ Use `nexus serve-docs` to view documentation locally.
     
     def _create_config(self):
         """Create project configuration."""
-        config = {
+        # Update configuration with project-specific values
+        updates = {
             "nexus": {
-                "version": "0.1.0",
                 "docs_directory": self.docs_dir,
                 "initialized": True,
-                "cursor_integration": True,
                 "template": self.template or "default"
             },
             "project": {
                 "name": self.project_root.name,
-                "type": "unknown",
-                "description": "AI-assisted development project"
-            },
-            "documentation": {
-                "auto_generate": True,
-                "formats": ["markdown"],
-                "include_types": ["prd", "arch", "impl", "int", "exec", "rules", "task", "tests"]
+                "description": f"AI-assisted development project: {self.project_root.name}"
             }
         }
         
-        config_file = self.nexus_dir / "config.json"
-        config_file.write_text(json.dumps(config, indent=2))
+        # Save configuration
+        self.config_manager.update_config(updates)
         console.print("⚙️ Created configuration", style="green")
