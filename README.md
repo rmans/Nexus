@@ -39,17 +39,51 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 - 🏗️ **Modular Architecture** - Clean separation of concerns with organized package structure
 - 📖 **Comprehensive Documentation** - Auto-generated docs with modular README sections
 - 🧪 **Testing Infrastructure** - Built-in testing framework with organized test structure
-- ⚙️ **Hybrid Configuration System** - Multi-layer configuration with environment-specific overrides
+- ⚙️ **Fixed Hybrid Configuration System** - Multi-layer configuration with full API compatibility and performance optimization
 - 🔄 **Smart Update System** - Automatic detection and seamless updates of project files
 - 🎯 **Cursor Integration** - Built-in support for Cursor AI assistant with rule management
 - 📊 **Documentation Generation** - Automated documentation generation from code
 - 🌍 **Environment Management** - Development, testing, staging, and production configurations
+- 🚀 **Professional Installer** - Cross-platform installation with hybrid configuration support
+- 🔧 **Configuration Templates** - Pre-built templates and schemas for easy setup
 
 ## Installation
 
+### Quick Install (Recommended)
+```bash
+# Install from PyPI
+pip install nexus-context
+
+# Or install from source
+git clone https://github.com/rmans/Nexus.git
+cd Nexus
+pip install -e .
+```
+
+### Professional Installer
+Nexus includes cross-platform installation scripts with hybrid configuration support:
+
+```bash
+# Python installer (cross-platform)
+python install.py
+
+# Unix/Linux
+./install.sh
+
+# Windows
+install.bat
+
+# macOS (with Homebrew support)
+./install-macos.sh
+
+# Check installation status
+python install.py --check
+```
+
+### Development Installation
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/rmans/Nexus.git
 cd Nexus
 
 # Set up virtual environment
@@ -58,6 +92,9 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Install in development mode
+pip install -e .
 ```
 
 ## Basic Usage
@@ -87,7 +124,13 @@ nexus test-all
 
 ## Configuration
 
-Nexus uses a hybrid configuration system with multiple layers:
+Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
+
+### Configuration Priority (Highest to Lowest)
+1. **Environment Variables** (`NEXUS_*`) - Runtime overrides
+2. **Runtime Config** (`.nexus/config.json`) - Session-specific settings
+3. **Environment-Specific** (`src/nexus/docs/configs/environments/{env}.yaml`) - Environment overrides
+4. **Main Config** (`config.yaml`) - Project root configuration
 
 ### Main Configuration (`config.yaml`)
 ```yaml
@@ -98,9 +141,26 @@ project:
 
 environment: "development"
 
+directories:
+  docs: "generated-docs"
+  cache: ".nexus/cache"
+  logs: ".nexus/logs"
+
 logging:
   level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "nexus.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+execution:
+  max_parallel: 4
+  timeout: 300
+  retry_attempts: 3
+
+documentation:
+  formats: ["html", "markdown"]
+  auto_generate: true
 
 features:
   auto_reload: true
@@ -109,10 +169,14 @@ features:
 ```
 
 ### Environment-Specific Configs
-- `src/nexus/docs/configs/environments/development.yaml`
-- `src/nexus/docs/configs/environments/testing.yaml`
-- `src/nexus/docs/configs/environments/staging.yaml`
-- `src/nexus/docs/configs/environments/production.yaml`
+- `src/nexus/docs/configs/environments/development.yaml` - Development settings
+- `src/nexus/docs/configs/environments/testing.yaml` - Testing configuration
+- `src/nexus/docs/configs/environments/staging.yaml` - Staging environment
+- `src/nexus/docs/configs/environments/production.yaml` - Production settings
+
+### Configuration Templates & Schemas
+- `src/nexus/docs/configs/templates/` - Configuration templates
+- `src/nexus/docs/configs/schemas/` - JSON schemas for validation
 
 ### Environment Variables
 ```bash
@@ -120,7 +184,27 @@ features:
 export NEXUS_ENV=production
 export NEXUS_DEBUG=true
 export NEXUS_LOG_LEVEL=DEBUG
+export NEXUS_OUTPUT_DIR=./prod-docs
+export NEXUS_MAX_PARALLEL=8
 export NEXUS_FEATURE_AUTO_RELOAD=true
+export NEXUS_FEATURE_DEBUG_MODE=false
+```
+
+### API Compatibility
+The configuration system maintains full backwards compatibility:
+```python
+from nexus.core.config import ConfigManager
+
+# Existing API works unchanged
+config_manager = ConfigManager()
+docs_dir = config_manager.get_docs_directory()
+is_init = config_manager.is_initialized()
+
+# New enhanced API
+from nexus.core.hybrid_config import get_config, is_debug, is_development
+config = get_config()
+debug_mode = is_debug()
+dev_mode = is_development()
 ```
 
 ## Project Structure

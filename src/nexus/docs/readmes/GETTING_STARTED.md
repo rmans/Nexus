@@ -10,7 +10,28 @@ This guide will help you get up and running with the Nexus project quickly.
 
 ## Installation
 
-### Option 1: Install from PyPI (Recommended)
+### Option 1: Professional Installer (Recommended)
+
+Nexus includes cross-platform installation scripts with hybrid configuration support:
+
+```bash
+# Python installer (cross-platform)
+python install.py
+
+# Unix/Linux
+./install.sh
+
+# Windows
+install.bat
+
+# macOS (with Homebrew support)
+./install-macos.sh
+
+# Check installation status
+python install.py --check
+```
+
+### Option 2: Install from PyPI
 
 ```bash
 # Install Nexus globally
@@ -20,7 +41,7 @@ pip install nexus-context
 nexus --version
 ```
 
-### Option 2: Development Installation
+### Option 3: Development Installation
 
 ```bash
 # Clone the repository
@@ -83,22 +104,24 @@ nexus test-all
 
 ## Configuration
 
-### Hybrid Configuration System
+### Fixed Hybrid Configuration System
 
-Nexus uses a hybrid configuration system with multiple layers:
+Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
 
-1. **Main Config** (`config.yaml`) - Core project settings in project root
-2. **Environment Config** - Environment-specific overrides
-3. **Runtime Config** (`.nexus/config.json`) - Runtime changes
-4. **Environment Variables** (`NEXUS_*`) - System environment overrides
+#### Configuration Priority (Highest to Lowest)
+1. **Environment Variables** (`NEXUS_*`) - Runtime overrides
+2. **Runtime Config** (`.nexus/config.json`) - Session-specific settings
+3. **Environment-Specific** (`src/nexus/docs/configs/environments/{env}.yaml`) - Environment overrides
+4. **Main Config** (`config.yaml`) - Project root configuration
 
-### Environment Setup
+#### Environment Setup
 
 1. **Main Configuration**: Edit `config.yaml` in your project root
 2. **Environment Variables**: Copy `.env.example` to `.env` and customize
 3. **Environment-Specific**: Modify files in `src/nexus/docs/configs/environments/`
+4. **Templates & Schemas**: Use files in `src/nexus/docs/configs/templates/` and `schemas/`
 
-### Configuration Examples
+#### Configuration Examples
 
 ```yaml
 # config.yaml
@@ -109,9 +132,26 @@ project:
 
 environment: "development"
 
+directories:
+  docs: "generated-docs"
+  cache: ".nexus/cache"
+  logs: ".nexus/logs"
+
 logging:
   level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "nexus.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+execution:
+  max_parallel: 4
+  timeout: 300
+  retry_attempts: 3
+
+documentation:
+  formats: ["html", "markdown"]
+  auto_generate: true
 
 features:
   auto_reload: true
@@ -124,7 +164,28 @@ features:
 NEXUS_ENV=development
 NEXUS_DEBUG=true
 NEXUS_LOG_LEVEL=DEBUG
+NEXUS_OUTPUT_DIR=./dev-docs
+NEXUS_MAX_PARALLEL=2
 NEXUS_FEATURE_AUTO_RELOAD=true
+NEXUS_FEATURE_DEBUG_MODE=true
+```
+
+#### API Compatibility
+
+The configuration system maintains full backwards compatibility:
+
+```python
+# Existing API works unchanged
+from nexus.core.config import ConfigManager
+config_manager = ConfigManager()
+docs_dir = config_manager.get_docs_directory()
+is_init = config_manager.is_initialized()
+
+# New enhanced API
+from nexus.core.hybrid_config import get_config, is_debug, is_development
+config = get_config()
+debug_mode = is_debug()
+dev_mode = is_development()
 ```
 
 ## Development Setup

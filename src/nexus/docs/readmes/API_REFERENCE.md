@@ -158,14 +158,14 @@ python -m nexus serve-docs --port 8080
 
 ## Configuration
 
-Nexus uses a hybrid configuration system with multiple layers and priority order:
+Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
 
-### Configuration Priority
+### Configuration Priority (Highest to Lowest)
 
-1. **Main Config** (`config.yaml`) - Core project settings
-2. **Environment Config** (`src/nexus/docs/configs/environments/{env}.yaml`) - Environment-specific overrides
-3. **Runtime Config** (`.nexus/config.json`) - Runtime changes
-4. **Environment Variables** (`NEXUS_*`) - System environment overrides
+1. **Environment Variables** (`NEXUS_*`) - Runtime overrides
+2. **Runtime Config** (`.nexus/config.json`) - Session-specific settings
+3. **Environment-Specific** (`src/nexus/docs/configs/environments/{env}.yaml`) - Environment overrides
+4. **Main Config** (`config.yaml`) - Project root configuration
 
 ### Main Configuration File
 
@@ -246,18 +246,26 @@ Environment-specific configurations are stored in `src/nexus/docs/configs/enviro
 
 ### Core Classes
 
-#### `HybridConfigManager`
+#### `ConfigManager` (Fixed Hybrid Configuration)
 
-Enhanced configuration manager with hybrid loading and priority support.
+Enhanced configuration manager with full API compatibility and performance optimization.
 
 ```python
-from nexus.core.hybrid_config import HybridConfigManager, get_config, is_development
+from nexus.core.hybrid_config import ConfigManager, get_config, is_development
 
-# Initialize configuration manager
-config_manager = HybridConfigManager()
+# Initialize configuration manager (backwards compatible)
+config_manager = ConfigManager()
 
-# Get configuration
+# Existing API works unchanged
+docs_dir = config_manager.get_docs_directory()
+is_init = config_manager.is_initialized()
+version = config_manager.get("nexus.version")
+
+# New enhanced API
 config = get_config()
+project_name = config.project_name
+environment = config.environment.value
+debug_mode = config.is_debug()
 
 # Check environment
 if is_development():
@@ -339,16 +347,24 @@ generator.generate(output_dir="./docs", format="html")
 ```python
 from nexus.core.hybrid_config import (
     get_config, 
+    get_config_manager,
     is_development, 
     is_production, 
     is_debug,
     get_docs_dir,
+    get_cache_dir,
+    get_logs_dir,
+    get_configs_dir,
     get_templates_dir,
-    validate_config
+    get_instructions_dir,
+    get_doc_dir,
+    validate_config,
+    initialize_project
 )
 
 # Get current configuration
 config = get_config()
+config_manager = get_config_manager()
 
 # Environment checks
 if is_development():
@@ -358,12 +374,41 @@ elif is_production():
 
 # Get directory paths
 docs_dir = get_docs_dir()
+cache_dir = get_cache_dir()
+logs_dir = get_logs_dir()
+configs_dir = get_configs_dir()
 templates_dir = get_templates_dir()
+instructions_dir = get_instructions_dir()
+
+# Get specific document type directory
+arch_dir = get_doc_dir("arch")
+impl_dir = get_doc_dir("impl")
 
 # Validate configuration
 errors = validate_config()
 if errors:
     print(f"Configuration errors: {errors}")
+
+# Initialize project with hybrid configuration
+initialize_project()
+```
+
+#### Backwards Compatibility Functions
+
+```python
+from nexus.core.config import ConfigManager
+
+# Existing API works unchanged
+config_manager = ConfigManager()
+
+# All existing methods work
+docs_dir = config_manager.get_docs_directory()
+is_init = config_manager.is_initialized()
+version = config_manager.get("nexus.version")
+config_manager.set("custom.value", "test")
+config_manager.update_config({"new": "value"})
+config_manager.save_config()
+errors = config_manager.validate_config()
 ```
 
 #### Update Functions

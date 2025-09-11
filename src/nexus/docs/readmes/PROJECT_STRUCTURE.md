@@ -146,9 +146,9 @@ generated-docs/
 - **`task/`**: Task definitions, workflow documentation, and process descriptions
 - **`tests/`**: Test documentation, test plans, and testing strategies
 
-## Configuration System
+## Fixed Hybrid Configuration System
 
-Nexus uses a hybrid configuration system with multiple layers and priority order:
+Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
 
 ### Configuration Files
 
@@ -156,13 +156,47 @@ Nexus uses a hybrid configuration system with multiple layers and priority order
 - **`.env.example`**: Environment variables template
 - **`.nexus/config.json`**: Runtime configuration overrides
 - **`src/nexus/docs/configs/environments/`**: Environment-specific configurations
+- **`src/nexus/docs/configs/templates/`**: Configuration templates
+- **`src/nexus/docs/configs/schemas/`**: JSON schemas for validation
+- **`src/nexus/docs/configs/examples/`**: Usage examples
 
-### Configuration Priority
+### Configuration Priority (Highest to Lowest)
 
-1. **Main Config** (`config.yaml`) - Core project settings
-2. **Environment Config** (`environments/{env}.yaml`) - Environment-specific overrides
-3. **Runtime Config** (`.nexus/config.json`) - Runtime changes
-4. **Environment Variables** (`NEXUS_*`) - System environment overrides
+1. **Environment Variables** (`NEXUS_*`) - Runtime overrides
+2. **Runtime Config** (`.nexus/config.json`) - Session-specific settings
+3. **Environment-Specific** (`environments/{env}.yaml`) - Environment overrides
+4. **Main Config** (`config.yaml`) - Project root configuration
+
+### Configuration Structure
+
+```
+config.yaml                          # Main configuration (project root)
+├── project: {name, version, description}
+├── environment: "development"
+├── directories: {docs, cache, logs}
+├── logging: {level, format, file, max_size, backup_count}
+├── execution: {max_parallel, timeout, retry_attempts}
+├── documentation: {formats, auto_generate}
+├── server: {host, port}
+└── features: {auto_reload, debug_mode, experimental_features}
+
+src/nexus/docs/configs/
+├── environments/
+│   ├── development.yaml            # Development settings
+│   ├── testing.yaml                # Testing configuration
+│   ├── staging.yaml                # Staging environment
+│   └── production.yaml             # Production settings
+├── templates/
+│   ├── config.template.yaml        # Main config template
+│   ├── logging.template.yaml       # Logging template
+│   └── project.template.yaml       # Project template
+├── schemas/
+│   ├── config.schema.json          # Configuration schema
+│   └── environment.schema.json     # Environment schema
+└── examples/
+    ├── serve_example.py            # Server example
+    └── docs_example.py             # Documentation example
+```
 
 ### Runtime Directories
 
@@ -170,8 +204,39 @@ Nexus uses a hybrid configuration system with multiple layers and priority order
   - **`config.json`**: Runtime overrides and session data
   - **`cache/`**: Cache directory for temporary files
   - **`logs/`**: Log files and execution logs
+  - **`instructions/`**: Instruction definitions
 - **`.cursor/`**: Cursor AI integration
   - **`rules/`**: Cursor rules and command definitions
+
+## Professional Installer System
+
+Nexus includes a comprehensive cross-platform installer system:
+
+### Installer Files
+
+- **`install.py`**: Python-based installer with rich UI (cross-platform)
+- **`install.sh`**: Unix/Linux installation script
+- **`install.bat`**: Windows installation script
+- **`install-macos.sh`**: macOS installation with Homebrew support
+
+### Installer Features
+
+- **Cross-platform Support**: Windows, macOS, Linux
+- **Hybrid Configuration Setup**: Installs all configuration layers
+- **Environment Detection**: Automatic environment setup
+- **PATH Configuration**: Command-line access setup
+- **Dependency Management**: Automatic dependency installation
+- **Verification**: Post-installation testing and validation
+- **Uninstallation**: Complete removal support
+
+### Installation Process
+
+1. **Prerequisites Check**: Python 3.8+, pip, platform-specific requirements
+2. **Configuration Installation**: Main config, environment configs, templates, schemas
+3. **Documentation Setup**: Comprehensive documentation and examples
+4. **Runtime Environment**: `.nexus/` directory structure and configuration
+5. **Command-line Access**: PATH setup and wrapper scripts
+6. **Verification**: Installation testing and status checking
 
 ## Development Environment
 
