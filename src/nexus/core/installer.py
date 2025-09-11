@@ -247,19 +247,31 @@ class NexusInstaller:
         nexus_runtime = self.nexus_dir / ".nexus"
         nexus_runtime.mkdir(exist_ok=True)
         
-        # Create initial runtime config
+        # Create initial runtime config using fixed configuration system
+        from nexus.core.hybrid_config import get_config, Environment
+        
+        config = get_config()
         runtime_config = {
             "nexus": {
-                "version": "1.0.0",
+                "version": config.project_version,
                 "template_version": "1.0.0",
                 "installed": True,
                 "install_date": self._get_current_timestamp(),
-                "install_path": str(self.nexus_dir)
+                "install_path": str(self.nexus_dir),
+                "environment": config.environment.value,
+                "debug_mode": config.is_debug()
             },
             "runtime_overrides": {},
             "session": {
                 "session_id": self._generate_session_id(),
                 "user_preferences": {}
+            },
+            "configuration": {
+                "hybrid_system": True,
+                "main_config": str(self.nexus_dir / "config.yaml"),
+                "configs_dir": str(self.nexus_dir / "configs"),
+                "templates_dir": str(self.nexus_dir / "configs" / "templates"),
+                "schemas_dir": str(self.nexus_dir / "configs" / "schemas")
             }
         }
         
