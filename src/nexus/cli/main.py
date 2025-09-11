@@ -3,11 +3,12 @@
 import click
 from pathlib import Path
 from rich.console import Console
+from ..core.version import get_version_string
 
 console = Console()
 
 @click.group()
-@click.version_option(version="0.1.0")
+@click.version_option(version=get_version_string())
 @click.option('--debug', is_flag=True, help='Enable debug logging')
 @click.option('--config', default='config.yaml', help='Path to configuration file')
 @click.option('--verbose', is_flag=True, help='Enable verbose output')

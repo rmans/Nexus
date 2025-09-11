@@ -6,14 +6,15 @@ from pathlib import Path
 from typing import Dict, List, Any
 from rich.console import Console
 from rich.prompt import Confirm
+from .version import get_current_template_version, version_compare
 
 console = Console()
 
 class ProjectUpdater:
     """Handles updating Nexus project files to latest version."""
     
-    # Update this when template files change
-    CURRENT_TEMPLATE_VERSION = "0.1.0"
+    # Get template version from centralized config
+    CURRENT_TEMPLATE_VERSION = get_current_template_version()
     
     def __init__(self, project_root="."):
         self.project_root = Path(project_root)
@@ -42,7 +43,7 @@ class ProjectUpdater:
         config = self._load_config()
         current_version = config.get("nexus", {}).get("template_version", "0.0.0")
         
-        return self._version_compare(current_version, self.CURRENT_TEMPLATE_VERSION) < 0
+        return version_compare(current_version, self.CURRENT_TEMPLATE_VERSION) < 0
     
     def update_project_files(self, force=False):
         """Update project files to latest version."""
@@ -141,22 +142,6 @@ class ProjectUpdater:
             return json.loads(self.config_file.read_text())
         return {}
     
-    def _version_compare(self, version1: str, version2: str) -> int:
-        """Compare two version strings. Returns -1, 0, or 1."""
-        v1_parts = [int(x) for x in version1.split('.')]
-        v2_parts = [int(x) for x in version2.split('.')]
-        
-        # Pad with zeros to same length
-        max_len = max(len(v1_parts), len(v2_parts))
-        v1_parts.extend([0] * (max_len - len(v1_parts)))
-        v2_parts.extend([0] * (max_len - len(v2_parts)))
-        
-        for v1, v2 in zip(v1_parts, v2_parts):
-            if v1 < v2:
-                return -1
-            elif v1 > v2:
-                return 1
-        return 0
     
     def _get_current_timestamp(self) -> str:
         """Get current timestamp as ISO string."""

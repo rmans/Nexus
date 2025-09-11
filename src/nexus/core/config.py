@@ -135,9 +135,11 @@ class ConfigManager:
         Returns:
             Default configuration dictionary
         """
+        from .version import get_nexus_version
+        
         return {
             "nexus": {
-                "version": "0.1.0",
+                "version": get_nexus_version(),
                 "docs_directory": "nexus_docs",
                 "initialized": False,
                 "cursor_integration": True,
