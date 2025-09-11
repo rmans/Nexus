@@ -1,4 +1,34 @@
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    # Fallback for environments where setuptools is not available
+    import os
+    import sys
+    
+    def find_packages(where='.', exclude=()):
+        """Simple find_packages implementation for setuptools fallback"""
+        out = []
+        stack = [(os.path.abspath(where), '')]
+        while stack:
+            where, prefix = stack.pop(0)
+            try:
+                for name in os.listdir(where):
+                    fn = os.path.join(where, name)
+                    if ('.' not in name and os.path.isdir(fn) and
+                        os.path.isfile(os.path.join(fn, '__init__.py'))):
+                        out.append(prefix + name)
+                        stack.append((fn, prefix + name + '.'))
+            except (OSError, IOError):
+                # Skip directories that can't be read
+                continue
+        return out
+    
+    def setup(**kwargs):
+        """Minimal setup function fallback"""
+        print("Warning: Using fallback setup function. Install setuptools for full functionality.")
+        # This is a minimal fallback - in practice, setuptools should always be available
+        # for modern Python packaging
+        sys.exit(1)
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -15,12 +45,6 @@ setup(
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     python_requires=">=3.8",
-    install_requires=[
-        "click>=8.0.0",
-        "pyyaml>=6.0",
-        "jinja2>=3.0.0",
-        "rich>=12.0.0",
-    ],
     extras_require={
         "dev": [
             "pytest>=7.0.0",
