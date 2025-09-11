@@ -216,6 +216,7 @@ __marimo__/
 .cursor/
 
 # Keep nexus_docs/ - this is project content that should be committed
+# Keep generated-docs/ - this is the documentation scaffold template
 # Add any generated files you want to ignore:
 # nexus_docs/generated/
 # nexus_docs/temp/
