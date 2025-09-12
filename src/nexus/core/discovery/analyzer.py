@@ -197,10 +197,54 @@ class CodeAnalyzer:
         """Detect frameworks and libraries used."""
         frameworks = []
         
-        # Python frameworks
-        if (target_path / 'manage.py').exists():
-            frameworks.append('django')
+        # Python frameworks - check pyproject.toml first (modern Python projects)
+        pyproject_file = target_path / 'pyproject.toml'
+        if pyproject_file.exists():
+            try:
+                import toml
+                pyproject_data = toml.load(pyproject_file)
+                dependencies = pyproject_data.get('project', {}).get('dependencies', [])
+                optional_deps = pyproject_data.get('project', {}).get('optional-dependencies', {})
+                
+                # Flatten all dependencies
+                all_deps = dependencies.copy()
+                for deps in optional_deps.values():
+                    if isinstance(deps, list):
+                        all_deps.extend(deps)
+                
+                # Check for frameworks
+                for dep in all_deps:
+                    dep_lower = dep.lower()
+                    if 'click' in dep_lower:
+                        frameworks.append('click')
+                    if 'rich' in dep_lower:
+                        frameworks.append('rich')
+                    if 'jinja2' in dep_lower:
+                        frameworks.append('jinja2')
+                    if 'pyyaml' in dep_lower or 'yaml' in dep_lower:
+                        frameworks.append('pyyaml')
+                    if 'pytest' in dep_lower:
+                        frameworks.append('pytest')
+                    if 'flask' in dep_lower:
+                        frameworks.append('flask')
+                    if 'fastapi' in dep_lower:
+                        frameworks.append('fastapi')
+                    if 'django' in dep_lower:
+                        frameworks.append('django')
+                    if 'mkdocs' in dep_lower:
+                        frameworks.append('mkdocs')
+                    if 'black' in dep_lower:
+                        frameworks.append('black')
+                    if 'flake8' in dep_lower:
+                        frameworks.append('flake8')
+                    if 'psutil' in dep_lower:
+                        frameworks.append('psutil')
+                    if 'setuptools' in dep_lower:
+                        frameworks.append('setuptools')
+            except Exception:
+                pass
         
+        # Fallback to requirements.txt
         req_file = target_path / 'requirements.txt'
         if req_file.exists():
             try:
@@ -213,8 +257,20 @@ class CodeAnalyzer:
                     frameworks.append('django')
                 if 'pytest' in content:
                     frameworks.append('pytest')
+                if 'click' in content:
+                    frameworks.append('click')
+                if 'rich' in content:
+                    frameworks.append('rich')
+                if 'jinja2' in content:
+                    frameworks.append('jinja2')
+                if 'pyyaml' in content or 'yaml' in content:
+                    frameworks.append('pyyaml')
             except Exception:
                 pass
+        
+        # Check for Django
+        if (target_path / 'manage.py').exists():
+            frameworks.append('django')
         
         # JavaScript frameworks
         package_file = target_path / 'package.json'
@@ -273,9 +329,70 @@ class CodeAnalyzer:
         if any(d in dirs for d in ['test', 'tests', '__tests__', 'spec']):
             patterns.append('has_tests')
         
-        # Documentation
-        if any(d in dirs for d in ['docs', 'documentation']):
+        # Documentation - enhanced detection
+        doc_patterns = [
+            'docs', 'documentation', 'readme', 'generated-docs', 
+            'nexus_docs', 'src/*/docs', '*/readmes'
+        ]
+        doc_found = False
+        
+        # Check for documentation directories
+        for pattern in doc_patterns:
+            if pattern in dirs:
+                doc_found = True
+                break
+        
+        # Check for README files
+        readme_files = list(target_path.glob('README*')) + list(target_path.glob('readme*'))
+        if readme_files:
+            doc_found = True
+        
+        # Check for documentation in subdirectories
+        for subdir in target_path.iterdir():
+            if subdir.is_dir() and any(doc_pattern in str(subdir).lower() for doc_pattern in doc_patterns):
+                doc_found = True
+                break
+        
+        if doc_found:
             patterns.append('documented')
+        
+        # CLI Application detection
+        if (target_path / 'pyproject.toml').exists():
+            try:
+                import toml
+                pyproject_data = toml.load(target_path / 'pyproject.toml')
+                scripts = pyproject_data.get('project', {}).get('scripts', {})
+                if scripts:
+                    patterns.append('cli_application')
+            except Exception:
+                pass
+        
+        # Check for Click-based CLI
+        if any(frameworks := self._detect_frameworks(target_path)) and 'click' in frameworks:
+            patterns.append('cli_application')
+            patterns.append('rich_output')
+        
+        # Plugin architecture detection
+        if any(d in dirs for d in ['plugins', 'extensions', 'modules', 'core']):
+            patterns.append('plugin_architecture')
+        
+        # Template system detection
+        if any(frameworks := self._detect_frameworks(target_path)) and 'jinja2' in frameworks:
+            patterns.append('template_system')
+        
+        # Hybrid configuration detection
+        config_files = ['config.yaml', 'config.yml', '.env', '.env.example']
+        if any((target_path / f).exists() for f in config_files):
+            patterns.append('hybrid_configuration')
+        
+        # Cross-platform detection
+        installer_files = ['install.py', 'install.sh', 'install.bat', 'install-macos.sh']
+        if any((target_path / f).exists() for f in installer_files):
+            patterns.append('cross_platform')
+        
+        # Documentation system detection
+        if any(d in dirs for d in ['generated-docs', 'nexus_docs', 'src/*/docs']):
+            patterns.append('documentation_system')
         
         # Configuration
         if any(f.exists() for f in [target_path / 'docker-compose.yml', target_path / 'Dockerfile']):
@@ -355,6 +472,18 @@ class CodeAnalyzer:
     def _find_entry_points(self, target_path: Path) -> List[str]:
         """Find application entry points."""
         entry_points = []
+        
+        # Check pyproject.toml for entry points
+        pyproject_file = target_path / 'pyproject.toml'
+        if pyproject_file.exists():
+            try:
+                import toml
+                pyproject_data = toml.load(pyproject_file)
+                scripts = pyproject_data.get('project', {}).get('scripts', {})
+                for script_name, script_path in scripts.items():
+                    entry_points.append(f"{script_name}: {script_path}")
+            except Exception:
+                pass
         
         # Common Python entry points
         python_entries = ['main.py', 'app.py', 'manage.py', 'run.py', '__main__.py']

@@ -50,6 +50,38 @@ class DiscoverySynthesizer:
         
         # Framework insights
         frameworks = analysis_data['frameworks']
+        patterns = analysis_data['patterns']
+        
+        # CLI Framework insights
+        if 'cli_application' in patterns:
+            if 'click' in frameworks and 'rich' in frameworks:
+                insights.append("Professional CLI development framework with Click and Rich console interface")
+            elif 'click' in frameworks:
+                insights.append("Click-based CLI application with structured command interface")
+            else:
+                insights.append("Command-line application with entry points defined")
+        
+        # Plugin architecture insights
+        if 'plugin_architecture' in patterns:
+            insights.append("Modular plugin architecture - excellent for extensibility and maintainability")
+        
+        # Template system insights
+        if 'template_system' in patterns:
+            insights.append("Template-driven content generation system - professional development approach")
+        
+        # Configuration insights
+        if 'hybrid_configuration' in patterns:
+            insights.append("Hybrid configuration system with multi-layer environment support")
+        
+        # Cross-platform insights
+        if 'cross_platform' in patterns:
+            insights.append("Cross-platform installer system - Windows, macOS, and Linux support")
+        
+        # Documentation system insights
+        if 'documentation_system' in patterns:
+            insights.append("Comprehensive documentation system with multiple specialized guides")
+        
+        # Traditional framework insights
         if 'django' in frameworks:
             insights.append("Django web application - follows MVT pattern")
         elif 'fastapi' in frameworks:
@@ -130,7 +162,9 @@ class DiscoverySynthesizer:
         
         # Determine application type
         app_type = "unknown"
-        if any(fw in frameworks for fw in ['django', 'fastapi', 'flask']):
+        if 'cli_application' in patterns:
+            app_type = "cli_framework"
+        elif any(fw in frameworks for fw in ['django', 'fastapi', 'flask']):
             app_type = "web_api"
         elif any(fw in frameworks for fw in ['nextjs', 'react', 'vue', 'angular']):
             app_type = "web_frontend" 
@@ -140,6 +174,24 @@ class DiscoverySynthesizer:
             app_type = "application"
         else:
             app_type = "library"
+        
+        # Enhanced architecture type detection
+        if 'cli_application' in patterns and 'plugin_architecture' in patterns:
+            architecture_type = "cli_development_framework"
+        elif 'cli_application' in patterns:
+            architecture_type = "cli_application"
+        elif 'plugin_architecture' in patterns:
+            architecture_type = "plugin_based"
+        elif 'microservices' in patterns:
+            architecture_type = "microservices"
+        elif 'monorepo' in patterns:
+            architecture_type = "monorepo"
+        elif 'api_service' in patterns:
+            architecture_type = "api_service"
+        elif 'mvc' in patterns or 'mvc_like' in patterns:
+            architecture_type = "mvc"
+        else:
+            architecture_type = "standard"
         
         return {
             'type': architecture_type,
@@ -163,9 +215,25 @@ class DiscoverySynthesizer:
             if test_ratio > 0.1:  # More than 10% test files
                 score += 10
         
-        # Documentation
+        # Documentation - enhanced scoring
         if 'documented' in patterns:
             score += 15
+        if 'documentation_system' in patterns:
+            score += 10  # Bonus for comprehensive documentation system
+        
+        # CLI Framework bonus
+        if 'cli_application' in patterns:
+            score += 15  # CLI applications are well-structured
+        if 'plugin_architecture' in patterns:
+            score += 10  # Plugin architecture shows good design
+        if 'template_system' in patterns:
+            score += 5   # Template system shows sophistication
+        if 'hybrid_configuration' in patterns:
+            score += 5   # Advanced configuration system
+        if 'cross_platform' in patterns:
+            score += 5   # Cross-platform support
+        if 'rich_output' in patterns:
+            score += 5   # Professional user interface
         
         # Containerization
         if 'containerized' in patterns:
@@ -220,6 +288,13 @@ class DiscoverySynthesizer:
         """Determine the type of technology stack."""
         frameworks = analysis_data['frameworks']
         languages = analysis_data['languages']
+        patterns = analysis_data['patterns']
+        
+        # CLI Framework detection
+        if 'cli_application' in patterns and 'plugin_architecture' in patterns:
+            return 'cli_development_framework'
+        elif 'cli_application' in patterns:
+            return 'cli_application'
         
         # Full-stack detection
         has_backend = any(fw in frameworks for fw in ['django', 'fastapi', 'flask', 'express'])
