@@ -90,6 +90,47 @@ def update_project(ctx, force, check_only):
     updater.update_project_files(force=force)
 
 
+@main.command("discover")
+@click.argument('path', default='.')
+@click.option('--output', type=click.Choice(['json', 'summary']), default='summary')
+@click.option('--cache', is_flag=True, help='Use cached results if available')
+@click.option('--deep', is_flag=True, help='Enable deeper analysis')
+@click.option('--languages', help='Comma-separated list of languages')
+@click.option('--clear-cache', is_flag=True, help='Clear discovery cache')
+@click.pass_context
+def discover(ctx, path, output, cache, deep, languages, clear_cache):
+    """Discover and analyze code structure, dependencies, and patterns.
+    
+    Automatically analyzes codebases to understand structure, dependencies, 
+    patterns, and quality. Provides structured data for other Nexus systems.
+    """
+    from nexus.core.discovery.engine import DiscoveryEngine
+    from nexus.core.discovery.cache import DiscoveryCache
+    
+    if clear_cache:
+        config_manager = ctx.obj.get('config_manager')
+        cache = DiscoveryCache(Path(config_manager.get_cache_directory()) / "discovery")
+        target_path = Path(path).resolve() if path != '.' else None
+        cache.clear(target_path)
+        console.print("🗑️ Discovery cache cleared", style="green")
+        return
+    
+    config_manager = ctx.obj.get('config_manager')
+    engine = DiscoveryEngine(config_manager)
+    
+    options = {'cache': cache, 'deep': deep}
+    if languages:
+        options['languages'] = [lang.strip() for lang in languages.split(',')]
+    
+    target_path = Path(path).resolve()
+    results = engine.discover(target_path, options)
+    
+    if output == 'json':
+        console.print(engine.outputs.format_json(results, pretty=True))
+    else:
+        console.print(engine.outputs.format_summary(results))
+
+
 @main.command("list-commands")
 @click.option('--category', help='Filter by command category')
 @click.option('--json', is_flag=True, help='Output in JSON format')
