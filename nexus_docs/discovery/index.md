@@ -12,8 +12,7 @@ Discovery reports follow the naming convention: `DISC-YYYY-MM-DD-Title.md`
 
 ## Available Reports
 
-- **Enhanced Analysis Test** (2025-09-11) - `DISC-2025-09-11-enhanced-analysis-test.md`
-- **Discovery_System_Added** (2025-09-11) - `DISC-2025-09-11-discoverysystemadded.md`
+*No discovery reports yet*
 
 ## Usage
 
