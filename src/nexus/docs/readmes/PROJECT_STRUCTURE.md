@@ -152,13 +152,51 @@ src/nexus/core/discovery/
 
 ### Discovery Features
 
-- **Automatic Code Analysis**: Analyzes project structure, dependencies, and patterns
-- **Language Detection**: Identifies programming languages and frameworks
-- **Architectural Pattern Recognition**: Detects design patterns and architectural styles
-- **Intelligent Insights**: Provides recommendations and quality assessments
+- **Advanced Code Analysis**: Sophisticated analysis of project structure, dependencies, and patterns
+- **Comprehensive Framework Detection**: Identifies Click, Rich, Jinja2, PyYAML, pytest, and 20+ frameworks
+- **Intelligent Architecture Classification**: Detects CLI applications, development frameworks, and architectural patterns
+- **Professional Insights**: Provides specific, actionable recommendations and quality assessments
 - **Performance Caching**: Caches results for faster subsequent analyses
-- **Report Management**: Save, list, and view discovery reports with consistent naming
+- **Report Management**: Save, list, and view discovery reports with DISC-YYYY-MM-DD-Title naming
+- **Entry Point Detection**: Discovers CLI commands and application entry points
+- **Pattern Recognition**: Detects plugin architecture, template systems, hybrid configuration
 - **CLI Integration**: Easy-to-use command-line interface (`nexus discover`, `nexus discovery`)
+
+### Enhanced Discovery Capabilities
+
+The Discovery System provides sophisticated analysis with advanced capabilities:
+
+**Framework Detection:**
+- Parses `pyproject.toml` for modern Python dependencies
+- Detects Click, Rich, Jinja2, PyYAML, pytest, MkDocs, Black, Flake8, psutil, setuptools
+- Identifies CLI frameworks and development tools
+
+**Architecture Classification:**
+- CLI Application detection
+- Development Framework classification
+- Plugin Architecture recognition
+- Template System detection
+- Hybrid Configuration detection
+- Cross-platform installer detection
+
+**Quality Assessment:**
+- Advanced scoring (0-100) with CLI framework bonuses
+- CLI Application: +15 points
+- Plugin Architecture: +10 points
+- Template System: +5 points
+- Hybrid Configuration: +5 points
+- Cross-platform: +5 points
+- Rich Output: +5 points
+- Documentation System: +10 bonus points
+
+**Pattern Recognition:**
+- `cli_application` - Command-line applications
+- `plugin_architecture` - Modular plugin systems
+- `template_system` - Template-driven content generation
+- `hybrid_configuration` - Multi-layer configuration systems
+- `cross_platform` - Cross-platform installer support
+- `documentation_system` - Comprehensive documentation systems
+- `rich_output` - Professional console interfaces
 
 ## Testing (`test/`)
 

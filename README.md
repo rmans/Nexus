@@ -143,12 +143,13 @@ nexus discovery view DISC-2025-09-11-Project-Analysis
 Nexus includes a powerful **Discovery System** that automatically analyzes your codebase to understand structure, dependencies, patterns, and quality:
 
 ### Key Features
-- 🔍 **Automatic Code Analysis** - Analyzes project structure, dependencies, and patterns
-- 📊 **Language Detection** - Identifies programming languages and frameworks used
-- 🏗️ **Architectural Pattern Recognition** - Detects design patterns and architectural styles
-- 💡 **Intelligent Insights** - Provides recommendations and quality assessments
+- 🔍 **Advanced Code Analysis** - Sophisticated analysis of project structure, dependencies, and patterns
+- 📊 **Comprehensive Framework Detection** - Identifies Click, Rich, Jinja2, PyYAML, pytest, and 20+ frameworks
+- 🏗️ **Intelligent Architecture Classification** - Detects CLI applications, development frameworks, and architectural patterns
+- 💡 **Professional Insights** - Provides specific, actionable recommendations and quality assessments
 - ⚡ **Performance Caching** - Caches results for faster subsequent analyses
-- 🎯 **CLI Integration** - Easy-to-use command-line interface
+- 📄 **Report Management** - Save, list, and view discovery reports with DISC-YYYY-MM-DD-Title naming
+- 🎯 **CLI Integration** - Easy-to-use command-line interface with rich output
 
 ### Discovery Commands
 ```bash
@@ -182,10 +183,12 @@ nexus discovery view DISC-2025-09-11-Project-Analysis
 ### Discovery Output
 The Discovery System provides:
 - **Project Overview** - File count, size, languages, frameworks
-- **Quality Assessment** - Code quality score, test coverage, documentation status
-- **Architecture Analysis** - Project type, complexity, patterns
-- **Insights & Recommendations** - Actionable suggestions for improvement
-- **Tech Stack Summary** - Main languages, frameworks, and tools
+- **Quality Assessment** - Advanced scoring (0-100) with CLI framework bonuses
+- **Architecture Analysis** - Intelligent classification (CLI apps, development frameworks, etc.)
+- **Professional Insights** - Specific recommendations for CLI frameworks, plugin architecture, etc.
+- **Tech Stack Summary** - Accurate stack type detection and framework identification
+- **Entry Point Detection** - Discovers CLI commands and application entry points
+- **Pattern Recognition** - Detects plugin architecture, template systems, hybrid configuration
 - **Comprehensive Reports** - Detailed markdown reports with frontmatter metadata
 - **Report Management** - Save, list, and view discovery reports with consistent naming
 

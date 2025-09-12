@@ -406,6 +406,43 @@ generator.generate(output_dir="./docs", format="html")
 
 ### Discovery System API
 
+The enhanced Discovery System provides sophisticated code analysis with advanced framework detection, intelligent architecture classification, and professional insights generation.
+
+#### Enhanced Capabilities
+
+**Framework Detection:**
+- Parses `pyproject.toml` for modern Python dependencies
+- Detects Click, Rich, Jinja2, PyYAML, pytest, MkDocs, Black, Flake8, psutil, setuptools
+- Fallback to `requirements.txt` for compatibility
+- Identifies CLI frameworks and development tools
+
+**Architecture Classification:**
+- CLI Application detection
+- Development Framework classification
+- Plugin Architecture recognition
+- Template System detection
+- Hybrid Configuration detection
+- Cross-platform installer detection
+
+**Quality Assessment:**
+- Advanced scoring (0-100) with CLI framework bonuses
+- CLI Application: +15 points
+- Plugin Architecture: +10 points
+- Template System: +5 points
+- Hybrid Configuration: +5 points
+- Cross-platform: +5 points
+- Rich Output: +5 points
+- Documentation System: +10 bonus points
+
+**Pattern Recognition:**
+- `cli_application` - Command-line applications
+- `plugin_architecture` - Modular plugin systems
+- `template_system` - Template-driven content generation
+- `hybrid_configuration` - Multi-layer configuration systems
+- `cross_platform` - Cross-platform installer support
+- `documentation_system` - Comprehensive documentation systems
+- `rich_output` - Professional console interfaces
+
 #### `DiscoveryEngine`
 Main orchestrator for the Discovery System.
 
@@ -430,7 +467,7 @@ json_output = engine.outputs.format_json(results, pretty=True)
 ```
 
 #### `CodeAnalyzer`
-Performs technical analysis of codebases.
+Performs advanced technical analysis of codebases with enhanced framework detection.
 
 ```python
 from nexus.core.discovery.analyzer import CodeAnalyzer
@@ -441,17 +478,18 @@ analysis = analyzer.analyze(target_path, options={
     'languages': ['python']
 })
 
-# Access analysis results
+# Access enhanced analysis results
 structure = analysis['structure']
 dependencies = analysis['dependencies']
 languages = analysis['languages']
-frameworks = analysis['frameworks']
-patterns = analysis['patterns']
+frameworks = analysis['frameworks']  # Now detects Click, Rich, Jinja2, PyYAML, etc.
+patterns = analysis['patterns']      # Now detects CLI apps, plugin architecture, etc.
+entry_points = analysis['entry_points']  # Now parses pyproject.toml for CLI commands
 quality = analysis['quality']
 ```
 
 #### `DiscoverySynthesizer`
-Transforms analysis data into insights and recommendations.
+Transforms analysis data into professional insights and recommendations with enhanced classification.
 
 ```python
 from nexus.core.discovery.synthesizer import DiscoverySynthesizer
@@ -459,11 +497,12 @@ from nexus.core.discovery.synthesizer import DiscoverySynthesizer
 synthesizer = DiscoverySynthesizer()
 synthesis = synthesizer.synthesize(analysis)
 
-# Access synthesis results
-insights = synthesis['insights']
+# Access enhanced synthesis results
+insights = synthesis['insights']           # Professional CLI framework insights
 recommendations = synthesis['recommendations']
-architecture = synthesis['architecture']
-tech_stack = synthesis['tech_stack']
+architecture = synthesis['architecture']   # Now classifies CLI apps, development frameworks
+tech_stack = synthesis['tech_stack']       # Now detects cli_application, cli_development_framework
+quality_assessment = synthesis['quality_assessment']  # Enhanced scoring with CLI bonuses
 ```
 
 #### `DiscoveryCache`
