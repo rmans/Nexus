@@ -12,8 +12,7 @@ Discovery reports follow the naming convention: `DISC-YYYY-MM-DD-Title.md`
 
 ## Available Reports
 
-- **Deep Analysis Report** (2025-09-11) - `DISC-2025-09-11-deep-analysis-report.md`
-- **Nexus Project Analysis** (2025-09-11) - `DISC-2025-09-11-nexus-project-analysis.md`
+- **Discovery_System_Added** (2025-09-11) - `DISC-2025-09-11-discoverysystemadded.md`
 
 ## Usage
 

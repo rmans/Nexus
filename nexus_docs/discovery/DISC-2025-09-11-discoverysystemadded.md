@@ -1,23 +1,23 @@
 ---
-title: Nexus Project Analysis
+title: Discovery_System_Added
 type: discovery
 date: 2025-09-11
 target_path: /home/rmans/projects/Nexus
-analysis_timestamp: 2025-09-11T20:36:28.708671
+analysis_timestamp: 2025-09-11T20:57:02.038263
 engine_version: 1.0.0
-deep_analysis: False
+deep_analysis: True
 languages: json, markdown, python, shell, yaml
 frameworks: pytest
 ---
 
-# Nexus Project Analysis
+# Discovery_System_Added
 
-**Analysis Date:** 2025-09-11 20:36:28
+**Analysis Date:** 2025-09-11 20:57:02
 **Target Path:** `/home/rmans/projects/Nexus`
 
 ## Executive Summary
 
-This discovery analysis examined **97 files** totaling **437.1 KB** across **5 programming languages** (json, markdown, python, shell, yaml).
+This discovery analysis examined **100 files** totaling **504.7 KB** across **5 programming languages** (json, markdown, python, shell, yaml).
 
 **Quality Score:** 70/100 (good)
 **Architecture Type:** standard
@@ -25,11 +25,11 @@ This discovery analysis examined **97 files** totaling **437.1 KB** across **5 p
 
 ## Project Overview
 
-- **Total Files:** 97
-- **Total Size:** 437.1 KB
+- **Total Files:** 100
+- **Total Size:** 504.7 KB
 - **Languages:** json, markdown, python, shell, yaml
 - **Frameworks:** pytest
-- **Lines of Code:** 7,084
+- **Lines of Code:** 7,154
 
 ## Quality Assessment
 
@@ -41,7 +41,7 @@ This discovery analysis examined **97 files** totaling **437.1 KB** across **5 p
 | Has Documentation | ❌ No |
 | Is Containerized | ❌ No |
 | Test Files | 5 |
-| Lines of Code | 7,084 |
+| Lines of Code | 7,154 |
 
 ## Architecture Analysis
 
@@ -93,7 +93,7 @@ mkdocs-mermaid2-plugin>=0.6.0
 - .example: 1 files
 - .j2: 6 files
 - .json: 6 files
-- .md: 28 files
+- .md: 31 files
 - .py: 40 files
 - .sh: 2 files
 - .toml: 1 files
@@ -102,15 +102,15 @@ mkdocs-mermaid2-plugin>=0.6.0
 
 **Largest Files:**
 - `src/nexus/core/hybrid_config.py` (34.2 KB)
-- `src/nexus/core/installer.py` (22.2 KB)
+- `nexus_docs/discovery/DISC-2025-09-11-deep-analysis-report.md` (30.1 KB)
+- `nexus_docs/discovery/DISC-2025-09-11-nexus-project-analysis.md` (28.3 KB)
+- `src/nexus/core/installer.py` (25.4 KB)
 - `src/nexus/core/integration_tester.py` (21.6 KB)
 - `src/nexus/cli/main.py` (20.0 KB)
 - `src/nexus/core/performance_tester.py` (19.4 KB)
 - `src/nexus/core/content_enhancer.py` (16.5 KB)
-- `src/nexus/core/content_analyzer.py` (15.0 KB)
-- `src/nexus/core/discovery/reports.py` (15.0 KB)
-- `src/nexus/core/discovery/analyzer.py` (15.0 KB)
-- `src/nexus/docs/readmes/PROJECT_STRUCTURE.md` (14.7 KB)
+- `src/nexus/docs/readmes/API_REFERENCE.md` (15.6 KB)
+- `src/nexus/docs/readmes/PROJECT_STRUCTURE.md` (15.6 KB)
 
 ## Validation Results
 
@@ -125,19 +125,19 @@ For integration with other tools, the complete analysis data is available in JSO
 {
   "metadata": {
     "target_path": "/home/rmans/projects/Nexus",
-    "timestamp": "2025-09-11T20:36:28.708671",
+    "timestamp": "2025-09-11T20:57:02.038263",
     "version": "1.0.0",
     "options": {
       "cache": false,
-      "deep": false
+      "deep": true
     },
     "engine": "nexus-discovery",
     "config_used": {}
   },
   "analysis": {
     "structure": {
-      "total_files": 97,
-      "total_size_bytes": 447605,
+      "total_files": 100,
+      "total_size_bytes": 516805,
       "directories": [
         "test",
         "scripts",
@@ -175,6 +175,7 @@ For integration with other tools, the complete analysis data is available in JSO
         "generated-docs/prd",
         "generated-docs/impl",
         "generated-docs/arch",
+        "generated-docs/discovery",
         "generated-docs/rules",
         "generated-docs/int",
         "generated-docs/exec",
@@ -196,17 +197,21 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/54",
         ".git/objects/8b",
         ".git/objects/22",
+        ".git/objects/46",
         ".git/objects/dc",
         ".git/objects/72",
         ".git/objects/09",
         ".git/objects/bb",
         ".git/objects/f1",
+        ".git/objects/aa",
         ".git/objects/b3",
         ".git/objects/f2",
         ".git/objects/1d",
         ".git/objects/83",
+        ".git/objects/d7",
         ".git/objects/0f",
         ".git/objects/b2",
+        ".git/objects/18",
         ".git/objects/9e",
         ".git/objects/82",
         ".git/objects/5d",
@@ -224,6 +229,7 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/c8",
         ".git/objects/01",
         ".git/objects/63",
+        ".git/objects/30",
         ".git/objects/44",
         ".git/objects/c5",
         ".git/objects/a6",
@@ -243,6 +249,7 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/9a",
         ".git/objects/6a",
         ".git/objects/3c",
+        ".git/objects/15",
         ".git/objects/b7",
         ".git/objects/13",
         ".git/objects/7a",
@@ -250,6 +257,7 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/info",
         ".git/objects/d0",
         ".git/objects/ae",
+        ".git/objects/55",
         ".git/objects/8e",
         ".git/objects/a9",
         ".git/objects/3d",
@@ -258,11 +266,13 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/b9",
         ".git/objects/da",
         ".git/objects/db",
+        ".git/objects/a7",
         ".git/objects/pack",
         ".git/objects/b1",
         ".git/objects/cb",
         ".git/objects/d2",
         ".git/objects/0d",
+        ".git/objects/d4",
         ".git/objects/eb",
         ".git/objects/a3",
         ".git/objects/3b",
@@ -281,11 +291,13 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/c4",
         ".git/objects/60",
         ".git/objects/47",
+        ".git/objects/61",
         ".git/objects/4b",
         ".git/objects/00",
         ".git/objects/10",
         ".git/objects/5a",
         ".git/objects/12",
+        ".git/objects/68",
         ".git/objects/31",
         ".git/objects/73",
         ".git/objects/8a",
@@ -295,6 +307,7 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/69",
         ".git/objects/27",
         ".git/objects/ce",
+        ".git/objects/bc",
         ".git/objects/2a",
         ".git/objects/08",
         ".git/objects/e6",
@@ -307,11 +320,13 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/c7",
         ".git/objects/f0",
         ".git/objects/5c",
+        ".git/objects/81",
         ".git/objects/e5",
         ".git/objects/a8",
         ".git/objects/f6",
         ".git/objects/c9",
         ".git/objects/cd",
+        ".git/objects/17",
         ".git/objects/0b",
         ".git/objects/50",
         ".git/objects/25",
@@ -333,6 +348,7 @@ For integration with other tools, the complete analysis data is available in JSO
         ".git/objects/d1",
         ".git/objects/2c",
         ".git/objects/76",
+        ".git/objects/c6",
         ".git/objects/07",
         ".git/objects/67",
         ".git/objects/bf",
@@ -499,7 +515,7 @@ For integration with other tools, the complete analysis data is available in JSO
         "venv/lib/python3.12/site-packages/pip-25.2.dist-info/licenses/src/pip/_vendor/tomli_w"
       ],
       "file_types": {
-        ".md": 28,
+        ".md": 31,
         ".yaml": 8,
         ".example": 1,
         ".txt": 1,
@@ -517,8 +533,18 @@ For integration with other tools, the complete analysis data is available in JSO
           "extension": ".py"
         },
         {
+          "path": "nexus_docs/discovery/DISC-2025-09-11-deep-analysis-report.md",
+          "size": 30859,
+          "extension": ".md"
+        },
+        {
+          "path": "nexus_docs/discovery/DISC-2025-09-11-nexus-project-analysis.md",
+          "size": 28992,
+          "extension": ".md"
+        },
+        {
           "path": "src/nexus/core/installer.py",
-          "size": 22724,
+          "size": 26052,
           "extension": ".py"
         },
         {
@@ -542,23 +568,13 @@ For integration with other tools, the complete analysis data is available in JSO
           "extension": ".py"
         },
         {
-          "path": "src/nexus/core/content_analyzer.py",
-          "size": 15398,
-          "extension": ".py"
-        },
-        {
-          "path": "src/nexus/core/discovery/reports.py",
-          "size": 15374,
-          "extension": ".py"
-        },
-        {
-          "path": "src/nexus/core/discovery/analyzer.py",
-          "size": 15363,
-          "extension": ".py"
+          "path": "src/nexus/docs/readmes/API_REFERENCE.md",
+          "size": 15958,
+          "extension": ".md"
         },
         {
           "path": "src/nexus/docs/readmes/PROJECT_STRUCTURE.md",
-          "size": 15069,
+          "size": 15954,
           "extension": ".md"
         }
       ]
@@ -811,9 +827,50 @@ For integration with other tools, the complete analysis data is available in JSO
       "has_tests"
     ],
     "quality_metrics": {
-      "total_lines_of_code": 7084,
+      "total_lines_of_code": 7154,
       "test_file_count": 5,
-      "python_complexity": {},
+      "python_complexity": {
+        "setup.py": 8,
+        "scripts/sync_version.py": 7,
+        "installers/install.py": 6,
+        "test/discovery/__init__.py": 1,
+        "test/discovery/test_engine.py": 1,
+        "src/nexus/__main__.py": 2,
+        "src/nexus/core/performance_tester.py": 24,
+        "src/nexus/core/validator.py": 13,
+        "src/nexus/core/content_migrator.py": 31,
+        "src/nexus/core/content_enhancer.py": 42,
+        "src/nexus/core/instructions.py": 5,
+        "src/nexus/core/generator.py": 23,
+        "src/nexus/core/config.py": 27,
+        "src/nexus/core/updater.py": 17,
+        "src/nexus/core/__init__.py": 1,
+        "src/nexus/core/version.py": 6,
+        "src/nexus/core/server.py": 3,
+        "src/nexus/core/hybrid_config.py": 95,
+        "src/nexus/core/integration_tester.py": 24,
+        "src/nexus/core/templates.py": 18,
+        "src/nexus/core/installer.py": 45,
+        "src/nexus/core/project_init.py": 17,
+        "src/nexus/core/commands.py": 7,
+        "src/nexus/core/status.py": 20,
+        "src/nexus/core/content_analyzer.py": 41,
+        "src/nexus/core/template_discovery.py": 11,
+        "src/nexus/cli/discover.py": 13,
+        "src/nexus/cli/__init__.py": 1,
+        "src/nexus/cli/main.py": 42,
+        "src/nexus/core/discovery/reports.py": 41,
+        "src/nexus/core/discovery/synthesizer.py": 59,
+        "src/nexus/core/discovery/engine.py": 6,
+        "src/nexus/core/discovery/validator.py": 20,
+        "src/nexus/core/discovery/cache.py": 19,
+        "src/nexus/core/discovery/__init__.py": 1,
+        "src/nexus/core/discovery/analyzer.py": 85,
+        "src/nexus/core/discovery/outputs.py": 11,
+        "src/nexus/docs/examples/discovery_example.py": 6,
+        "src/nexus/docs/configs/examples/serve_example.py": 4,
+        "src/nexus/docs/configs/examples/docs_example.py": 3
+      },
       "code_coverage_indicators": []
     },
     "entry_points": []
@@ -840,7 +897,7 @@ For integration with other tools, the complete analysis data is available in JSO
       "has_documentation": false,
       "is_containerized": false,
       "test_file_count": 5,
-      "lines_of_code": 7084,
+      "lines_of_code": 7154,
       "assessment": "good"
     },
     "technology_stack": {
