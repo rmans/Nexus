@@ -269,14 +269,8 @@ class NexusInstaller:
     
     def _create_nexus_docs_structure(self) -> None:
         """Create nexus_docs directory structure with discovery subdirectory."""
-        # Get the docs directory from config
-        try:
-            from nexus.core.hybrid_config import get_config_manager
-            config_manager = get_config_manager()
-            docs_dir = config_manager.get_docs_dir()
-        except Exception:
-            # Fallback to default
-            docs_dir = self.nexus_dir / "nexus_docs"
+        # Use the target installation directory for docs
+        docs_dir = self.nexus_dir / "nexus_docs"
         
         # Create main docs directory
         docs_dir.mkdir(parents=True, exist_ok=True)
