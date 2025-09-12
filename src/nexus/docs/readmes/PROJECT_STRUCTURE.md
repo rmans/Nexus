@@ -33,7 +33,8 @@ Nexus/
 │       │       ├── synthesizer.py # Insights and recommendations
 │       │       ├── validator.py   # Result validation
 │       │       ├── cache.py       # Performance caching
-│       │       └── outputs.py     # Output formatting
+│       │       ├── outputs.py     # Output formatting
+│       │       └── reports.py     # Report management system
 │       ├── docs/              # Documentation files
 │       │   ├── readmes/       # Modular README sections
 │       │   └── configs/       # Configuration structure
@@ -48,7 +49,14 @@ Nexus/
 │   └── logs/                 # Log files
 ├── .cursor/                   # Cursor AI integration
 │   └── rules/                # Cursor rules and commands
+├── nexus_docs/               # Project documentation
+│   └── discovery/            # Discovery reports
+│       ├── index.md          # Discovery reports index
+│       └── DISC-*.md         # Discovery reports (DISC-YYYY-MM-DD-Title.md)
 ├── test/                      # Test files and scripts
+│   └── discovery/            # Discovery system tests
+│       ├── __init__.py
+│       └── test_engine.py
 └── venv/                      # Python virtual environment
 ```
 
@@ -128,7 +136,8 @@ src/nexus/core/discovery/
 ├── synthesizer.py     # Insights and recommendations
 ├── validator.py       # Result validation
 ├── cache.py           # Performance caching
-└── outputs.py         # Output formatting
+├── outputs.py         # Output formatting
+└── reports.py         # Report management system
 ```
 
 ### Discovery Components
@@ -139,6 +148,7 @@ src/nexus/core/discovery/
 - **`validator.py`**: Ensures completeness and accuracy of discovery results
 - **`cache.py`**: Manages caching for performance optimization
 - **`outputs.py`**: Handles formatting and presentation of results
+- **`reports.py`**: Manages saving, listing, and viewing discovery reports
 
 ### Discovery Features
 
@@ -147,18 +157,23 @@ src/nexus/core/discovery/
 - **Architectural Pattern Recognition**: Detects design patterns and architectural styles
 - **Intelligent Insights**: Provides recommendations and quality assessments
 - **Performance Caching**: Caches results for faster subsequent analyses
-- **CLI Integration**: Easy-to-use command-line interface (`nexus discover`)
+- **Report Management**: Save, list, and view discovery reports with consistent naming
+- **CLI Integration**: Easy-to-use command-line interface (`nexus discover`, `nexus discovery`)
 
 ## Testing (`test/`)
 
 ```
 test/
+├── discovery/                 # Discovery system tests
+│   ├── __init__.py
+│   └── test_engine.py
 ├── results/                   # Test execution results and reports
 └── scripts/                   # Test automation scripts
 ```
 
 ### Test Organization
 
+- **`discovery/`**: Discovery system unit tests and integration tests
 - **`results/`**: Stores test output, reports, and execution logs
 - **`scripts/`**: Contains automated test scripts and testing utilities
 
@@ -189,9 +204,9 @@ generated-docs/
 - **`task/`**: Task definitions, workflow documentation, and process descriptions
 - **`tests/`**: Test documentation, test plans, and testing strategies
 
-## Fixed Hybrid Configuration System
+## Hybrid Configuration System
 
-Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
+Nexus uses a **hybrid configuration system** with full API compatibility and performance optimization:
 
 ### Configuration Files
 

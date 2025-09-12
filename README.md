@@ -39,14 +39,16 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 - 🏗️ **Modular Architecture** - Clean separation of concerns with organized package structure
 - 📖 **Comprehensive Documentation** - Auto-generated docs with modular README sections
 - 🧪 **Testing Infrastructure** - Built-in testing framework with organized test structure
-- ⚙️ **Fixed Hybrid Configuration System** - Multi-layer configuration with full API compatibility and performance optimization
+- ⚙️ **Hybrid Configuration System** - Multi-layer configuration with full API compatibility and performance optimization
 - 🔄 **Smart Update System** - Automatic detection and seamless updates of project files
-- 🔍 **Discovery System** - Automatic code analysis, pattern recognition, and intelligent insights
+- 🔍 **Discovery System** - Automatic code analysis, pattern recognition, and intelligent insights with report management
 - 🎯 **Cursor Integration** - Built-in support for Cursor AI assistant with rule management
 - 📊 **Documentation Generation** - Automated documentation generation from code
 - 🌍 **Environment Management** - Development, testing, staging, and production configurations
 - 🚀 **Professional Installer** - Cross-platform installation with hybrid configuration support
 - 🔧 **Configuration Templates** - Pre-built templates and schemas for easy setup
+- 📄 **Report Management** - Save, list, and view discovery reports with DISC-YYYY-MM-DD-Title naming
+- 🎨 **Rich CLI Interface** - Beautiful console output with progress indicators and colored output
 
 ## Installation
 
@@ -126,6 +128,14 @@ nexus test-all
 nexus discover
 nexus discover --deep
 nexus discover --output json
+
+# Save discovery reports
+nexus discover --save "Project Analysis"
+nexus discover --deep --save "Deep Analysis Report"
+
+# Manage discovery reports
+nexus discovery list
+nexus discovery view DISC-2025-09-11-Project-Analysis
 ```
 
 ## Discovery System
@@ -159,6 +169,14 @@ nexus discover --cache
 
 # Clear discovery cache
 nexus discover --clear-cache
+
+# Save discovery reports
+nexus discover --save "Project Analysis"
+nexus discover --deep --save "Deep Analysis Report"
+
+# Manage discovery reports
+nexus discovery list
+nexus discovery view DISC-2025-09-11-Project-Analysis
 ```
 
 ### Discovery Output
@@ -168,10 +186,12 @@ The Discovery System provides:
 - **Architecture Analysis** - Project type, complexity, patterns
 - **Insights & Recommendations** - Actionable suggestions for improvement
 - **Tech Stack Summary** - Main languages, frameworks, and tools
+- **Comprehensive Reports** - Detailed markdown reports with frontmatter metadata
+- **Report Management** - Save, list, and view discovery reports with consistent naming
 
 ## Configuration
 
-Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
+Nexus uses a **hybrid configuration system** with full API compatibility and performance optimization:
 
 ### Configuration Priority (Highest to Lowest)
 1. **Environment Variables** (`NEXUS_*`) - Runtime overrides
@@ -262,11 +282,21 @@ Nexus/
 ├── .env.example               # Environment variables template
 ├── src/nexus/                 # Main package
 │   ├── cli/                   # CLI commands and interface
+│   │   └── discover.py        # Discovery CLI commands
 │   ├── core/                  # Core functionality
 │   │   ├── config.py          # Configuration management
 │   │   ├── hybrid_config.py   # Hybrid configuration system
 │   │   ├── updater.py         # Smart update system
-│   │   └── status.py          # Project status management
+│   │   ├── status.py          # Project status management
+│   │   ├── version.py         # Centralized version management
+│   │   └── discovery/         # Discovery System
+│   │       ├── engine.py      # Main discovery orchestrator
+│   │       ├── analyzer.py    # Code analysis engine
+│   │       ├── synthesizer.py # Data synthesis and insights
+│   │       ├── validator.py   # Result validation
+│   │       ├── cache.py       # Caching system
+│   │       ├── outputs.py     # Output formatting
+│   │       └── reports.py     # Report management
 │   ├── docs/                  # Documentation system
 │   │   ├── readmes/           # Modular documentation
 │   │   └── configs/           # Configuration structure
@@ -282,7 +312,11 @@ Nexus/
 ├── .cursor/                   # Cursor AI integration
 │   └── rules/                # Cursor rules and commands
 ├── nexus_docs/               # Project documentation
+│   └── discovery/            # Discovery reports
+│       ├── index.md          # Discovery reports index
+│       └── DISC-*.md         # Discovery reports
 ├── test/                     # Test files
+│   └── discovery/            # Discovery system tests
 └── venv/                     # Virtual environment
 ```
 

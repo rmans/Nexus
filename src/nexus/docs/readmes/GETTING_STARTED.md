@@ -129,6 +129,7 @@ nexus discover --output json
 - **🏗️ Architectural Pattern Recognition** - Detects design patterns and architectural styles
 - **💡 Intelligent Insights** - Provides recommendations and quality assessments
 - **⚡ Performance Caching** - Caches results for faster subsequent analyses
+- **📄 Report Management** - Save, list, and view discovery reports with consistent naming
 
 ### Discovery Output
 
@@ -138,6 +139,7 @@ The Discovery System provides:
 - **Architecture Analysis** - Project type, complexity, patterns
 - **Insights & Recommendations** - Actionable suggestions for improvement
 - **Tech Stack Summary** - Main languages, frameworks, and tools
+- **Comprehensive Reports** - Detailed markdown reports with frontmatter metadata
 
 ### Advanced Discovery
 
@@ -153,13 +155,62 @@ nexus discover --clear-cache
 
 # Deep analysis with caching
 nexus discover --deep --cache
+
+# Save discovery reports
+nexus discover --save "Project Analysis"
+nexus discover --deep --save "Deep Analysis Report"
+
+# Manage discovery reports
+nexus discovery list
+nexus discovery view DISC-2025-09-11-Project-Analysis
 ```
+
+### Discovery System
+
+The Discovery System provides comprehensive code analysis with report management:
+
+#### Quick Discovery Examples
+
+```bash
+# Basic discovery
+nexus discover
+
+# Deep analysis with detailed insights
+nexus discover --deep
+
+# JSON output for integration
+nexus discover --output json
+
+# Language-specific analysis
+nexus discover --languages python,javascript
+
+# Save discovery reports
+nexus discover --save "Project Analysis"
+nexus discover --deep --save "Deep Analysis Report"
+
+# Manage discovery reports
+nexus discovery list
+nexus discovery view DISC-2025-09-11-Project-Analysis
+```
+
+#### Report Management
+
+Discovery reports are automatically saved with the naming convention `DISC-YYYY-MM-DD-Title.md` and include:
+
+- **Frontmatter Metadata** - Analysis timestamp, options, and configuration
+- **Executive Summary** - High-level project overview and key findings
+- **Quality Assessment** - Code quality score, test coverage, documentation status
+- **Architecture Analysis** - Project type, complexity, patterns detected
+- **Insights & Recommendations** - Actionable suggestions for improvement
+- **Tech Stack Summary** - Main languages, frameworks, and tools identified
+
+Reports are stored in `nexus_docs/discovery/` and automatically indexed for easy management.
 
 ## Configuration
 
-### Fixed Hybrid Configuration System
+### Hybrid Configuration System
 
-Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
+Nexus uses a **hybrid configuration system** with full API compatibility and performance optimization:
 
 #### Configuration Priority (Highest to Lowest)
 1. **Environment Variables** (`NEXUS_*`) - Runtime overrides

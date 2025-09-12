@@ -89,6 +89,7 @@ nexus discover [PATH] [OPTIONS]
 - `--deep`: Enable deeper analysis
 - `--languages`: Comma-separated list of languages to focus on
 - `--clear-cache`: Clear discovery cache
+- `--save`: Save discovery report with given title
 
 **Examples:**
 ```bash
@@ -104,8 +105,36 @@ nexus discover --output json
 # Language-specific analysis
 nexus discover --languages python,javascript
 
+# Save discovery report
+nexus discover --save "Project Analysis"
+nexus discover --deep --save "Deep Analysis Report"
+
 # Clear cache
 nexus discover --clear-cache
+```
+
+##### `discovery`
+Manage discovery reports.
+
+```bash
+nexus discovery ACTION [REPORT_ID]
+```
+
+**Actions:**
+- `list`: List all saved discovery reports
+- `view`: View a specific discovery report
+
+**Arguments:**
+- `REPORT_ID`: Report ID (filename without extension) for view action
+
+**Examples:**
+```bash
+# List all reports
+nexus discovery list
+
+# View specific report
+nexus discovery view DISC-2025-09-11-Project-Analysis
+nexus discovery view DISC-2025-09-11-Deep-Analysis-Report
 ```
 
 ##### `list-commands`
@@ -193,7 +222,7 @@ python -m nexus serve-docs --port 8080
 
 ## Configuration
 
-Nexus uses a **fixed hybrid configuration system** with full API compatibility and performance optimization:
+Nexus uses a **hybrid configuration system** with full API compatibility and performance optimization:
 
 ### Configuration Priority (Highest to Lowest)
 
@@ -281,7 +310,7 @@ Environment-specific configurations are stored in `src/nexus/docs/configs/enviro
 
 ### Core Classes
 
-#### `ConfigManager` (Fixed Hybrid Configuration)
+#### `ConfigManager` (Hybrid Configuration)
 
 Enhanced configuration manager with full API compatibility and performance optimization.
 
@@ -473,6 +502,35 @@ is_valid = validation['valid']
 warnings = validation['warnings']
 errors = validation['errors']
 completeness_score = validation['completeness_score']
+```
+
+#### `DiscoveryReportManager`
+Manages saving, listing, and viewing discovery reports.
+
+```python
+from nexus.core.discovery.reports import DiscoveryReportManager
+from nexus.core.hybrid_config import get_config_manager
+
+# Initialize report manager
+config_manager = get_config_manager()
+report_manager = DiscoveryReportManager(config_manager)
+
+# Save a discovery report
+results = engine.discover(target_path, options)
+report_path = report_manager.save_report(results, "Project Analysis", target_path)
+print(f"Report saved: {report_path}")
+
+# List all reports
+reports = report_manager.list_reports()
+for report in reports:
+    print(f"• {report['title']} ({report['date']})")
+    print(f"  File: {report['filename']}")
+
+# Get specific report
+report = report_manager.get_report("DISC-2025-09-11-Project-Analysis")
+if report:
+    print(f"Title: {report['metadata']['title']}")
+    print(f"Content: {report['content']}")
 ```
 
 ### Utility Functions
