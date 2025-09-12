@@ -241,6 +241,9 @@ class NexusInstaller:
     
     def _install_documentation(self) -> None:
         """Install documentation files."""
+        # Ensure nexus_dir exists before copying files
+        self.nexus_dir.mkdir(parents=True, exist_ok=True)
+        
         docs_source = self.package_root / "docs" / "readmes"
         if docs_source.exists():
             for doc_file in docs_source.glob("*.md"):
