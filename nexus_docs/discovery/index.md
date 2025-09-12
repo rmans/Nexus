@@ -13,6 +13,7 @@ Discovery reports follow the naming convention: `DISC-YYYY-MM-DD-Title.md`
 ## Available Reports
 
 - **DAR Discovery System** (2025-09-11) - `DISC-2025-09-11-dar-discovery-system.md`
+- **Fixed Discovery System Test** (2025-09-11) - `DISC-2025-09-11-fixed-discovery-system-test.md`
 
 ## Usage
 

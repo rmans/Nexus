@@ -51,40 +51,67 @@ class DiscoverySynthesizer:
         # Framework insights
         frameworks = analysis_data['frameworks']
         patterns = analysis_data['patterns']
+        project_type = self._determine_project_type(analysis_data)
         
-        # CLI Framework insights
-        if 'cli_application' in patterns:
+        # Context-aware insights based on project type
+        if project_type == 'cli_application':
             if 'click' in frameworks and 'rich' in frameworks:
                 insights.append("Professional CLI development framework with Click and Rich console interface")
             elif 'click' in frameworks:
                 insights.append("Click-based CLI application with structured command interface")
             else:
                 insights.append("Command-line application with entry points defined")
+            
+            if 'plugin_architecture' in patterns:
+                insights.append("Modular plugin architecture - excellent for extensibility and maintainability")
+            
+            if 'template_system' in patterns:
+                insights.append("Template-driven content generation system - professional development approach")
+            
+            if 'hybrid_configuration' in patterns:
+                insights.append("Hybrid configuration system with multi-layer environment support")
+            
+            if 'cross_platform' in patterns:
+                insights.append("Cross-platform installer system - Windows, macOS, and Linux support")
+                
+        elif project_type == 'web_application':
+            if 'django' in frameworks:
+                insights.append("Django web application - follows MVT pattern")
+            elif 'fastapi' in frameworks:
+                insights.append("FastAPI application - modern async API framework")
+            elif 'nextjs' in frameworks:
+                insights.append("Next.js application - full-stack React framework")
+            elif 'react' in frameworks:
+                insights.append("React application - component-based frontend framework")
+            elif 'vue' in frameworks:
+                insights.append("Vue.js application - progressive frontend framework")
+            
+            if 'api_service' in patterns:
+                insights.append("Service-oriented architecture with API layer")
+                
+        elif project_type == 'data_science':
+            if 'pandas' in frameworks and 'numpy' in frameworks:
+                insights.append("Data analysis project with pandas and numpy")
+            elif 'jupyter' in frameworks:
+                insights.append("Jupyter notebook-based data science project")
+            elif 'scikit-learn' in frameworks:
+                insights.append("Machine learning project with scikit-learn")
+                
+        elif project_type == 'library':
+            insights.append("Python library suitable for distribution")
+            if 'documented' in patterns:
+                insights.append("Well-documented library with comprehensive API reference")
+            if 'has_tests' in patterns:
+                insights.append("Tested library with good test coverage")
         
-        # Plugin architecture insights
-        if 'plugin_architecture' in patterns:
-            insights.append("Modular plugin architecture - excellent for extensibility and maintainability")
-        
-        # Template system insights
-        if 'template_system' in patterns:
-            insights.append("Template-driven content generation system - professional development approach")
-        
-        # Configuration insights
-        if 'hybrid_configuration' in patterns:
-            insights.append("Hybrid configuration system with multi-layer environment support")
-        
-        # Cross-platform insights
-        if 'cross_platform' in patterns:
-            insights.append("Cross-platform installer system - Windows, macOS, and Linux support")
-        
-        # Documentation system insights
+        # Universal insights
         if 'documentation_system' in patterns:
             insights.append("Comprehensive documentation system with multiple specialized guides")
         
-        # Traditional framework insights
-        if 'django' in frameworks:
+        # Additional framework insights (avoid duplicates)
+        if project_type != 'web_application' and 'django' in frameworks:
             insights.append("Django web application - follows MVT pattern")
-        elif 'fastapi' in frameworks:
+        elif project_type != 'web_application' and 'fastapi' in frameworks:
             insights.append("FastAPI application - modern async API framework")
         elif 'nextjs' in frameworks:
             insights.append("Next.js application - full-stack React framework")
@@ -160,16 +187,26 @@ class DiscoverySynthesizer:
         else:
             architecture_type = "standard"
         
-        # Determine application type
+        # Determine application type with better classification
         app_type = "unknown"
-        if 'cli_application' in patterns:
-            app_type = "cli_framework"
-        elif any(fw in frameworks for fw in ['django', 'fastapi', 'flask']):
-            app_type = "web_api"
-        elif any(fw in frameworks for fw in ['nextjs', 'react', 'vue', 'angular']):
-            app_type = "web_frontend" 
-        elif 'express' in frameworks:
-            app_type = "web_backend"
+        project_type = self._determine_project_type(analysis_data)
+        
+        if project_type == 'cli_application':
+            if 'plugin_architecture' in patterns:
+                app_type = "cli_framework"
+            else:
+                app_type = "cli_application"
+        elif project_type == 'web_application':
+            if any(fw in frameworks for fw in ['django', 'fastapi', 'flask']):
+                app_type = "web_backend"
+            elif any(fw in frameworks for fw in ['nextjs', 'react', 'vue', 'angular']):
+                app_type = "web_frontend"
+            else:
+                app_type = "web_application"
+        elif project_type == 'data_science':
+            app_type = "data_analysis"
+        elif project_type == 'mobile_application':
+            app_type = "mobile_app"
         elif analysis_data['entry_points']:
             app_type = "application"
         else:
@@ -201,54 +238,91 @@ class DiscoverySynthesizer:
         }
     
     def _assess_quality(self, analysis_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Assess overall code quality."""
+        """Assess overall code quality with realistic, context-aware scoring."""
         quality_metrics = analysis_data['quality_metrics']
         patterns = analysis_data['patterns']
+        frameworks = analysis_data['frameworks']
         
-        # Calculate quality score (0-100)
-        score = 50  # Base score
+        # More conservative base score
+        score = 40  # Lower base score for realism
         
-        # Test coverage indicator
+        # Test coverage - more conservative
         if 'has_tests' in patterns:
-            score += 20
+            score += 15  # Reduced from 20
             test_ratio = quality_metrics['test_file_count'] / max(1, analysis_data['structure']['total_files'])
             if test_ratio > 0.1:  # More than 10% test files
-                score += 10
+                score += 8  # Reduced from 10
         
-        # Documentation - enhanced scoring
+        # Documentation - more conservative
         if 'documented' in patterns:
-            score += 15
+            score += 12  # Reduced from 15
         if 'documentation_system' in patterns:
-            score += 10  # Bonus for comprehensive documentation system
+            score += 8   # Reduced from 10
         
-        # CLI Framework bonus
-        if 'cli_application' in patterns:
-            score += 15  # CLI applications are well-structured
-        if 'plugin_architecture' in patterns:
-            score += 10  # Plugin architecture shows good design
-        if 'template_system' in patterns:
-            score += 5   # Template system shows sophistication
-        if 'hybrid_configuration' in patterns:
-            score += 5   # Advanced configuration system
-        if 'cross_platform' in patterns:
-            score += 5   # Cross-platform support
-        if 'rich_output' in patterns:
-            score += 5   # Professional user interface
+        # Context-aware bonuses based on project type
+        project_type = self._determine_project_type(analysis_data)
         
-        # Containerization
+        if project_type == 'cli_application':
+            # CLI-specific bonuses
+            if 'cli_application' in patterns:
+                score += 10  # Reduced from 15
+            if 'rich_output' in patterns:
+                score += 5
+            if 'plugin_architecture' in patterns:
+                score += 8   # Reduced from 10
+            if 'template_system' in patterns:
+                score += 3   # Reduced from 5
+            if 'hybrid_configuration' in patterns:
+                score += 3   # Reduced from 5
+            if 'cross_platform' in patterns:
+                score += 3   # Reduced from 5
+                
+        elif project_type == 'web_application':
+            # Web-specific bonuses
+            if any(fw in frameworks for fw in ['django', 'flask', 'fastapi']):
+                score += 8
+            if any(fw in frameworks for fw in ['react', 'vue', 'angular']):
+                score += 8
+            if 'api_service' in patterns:
+                score += 5
+            if 'mvc' in patterns:
+                score += 5
+                
+        elif project_type == 'data_science':
+            # Data science bonuses
+            if any(fw in frameworks for fw in ['pandas', 'numpy', 'scikit-learn']):
+                score += 8
+            if 'jupyter' in frameworks:
+                score += 5
+            if 'notebooks' in patterns:
+                score += 3
+                
+        elif project_type == 'library':
+            # Library-specific bonuses
+            if 'documented' in patterns:
+                score += 5  # Extra bonus for documented libraries
+            if 'has_tests' in patterns:
+                score += 5  # Extra bonus for tested libraries
+            if 'versioned' in patterns:
+                score += 3
+        
+        # Universal quality indicators
         if 'containerized' in patterns:
-            score += 10
+            score += 8  # Reduced from 10
         
         # Code organization
         if any(pattern in patterns for pattern in ['mvc', 'api_service', 'microservices']):
-            score += 10
+            score += 8  # Reduced from 10
         
-        # Complexity penalty
+        # Complexity penalties
         total_files = analysis_data['structure']['total_files']
         if total_files > 1000:
             score -= 5  # Large projects are harder to maintain
+        elif total_files < 5:
+            score -= 10  # Very small projects often lack structure
         
-        score = max(0, min(100, score))  # Clamp to 0-100
+        # Cap excellent projects at 90-95, not 100
+        score = max(0, min(95, score))  # Cap at 95 for realism
         
         return {
             'overall_score': score,
@@ -259,6 +333,37 @@ class DiscoverySynthesizer:
             'lines_of_code': quality_metrics['total_lines_of_code'],
             'assessment': 'excellent' if score >= 80 else 'good' if score >= 60 else 'needs_improvement'
         }
+    
+    def _determine_project_type(self, analysis_data: Dict[str, Any]) -> str:
+        """Determine the project type for context-aware scoring."""
+        frameworks = analysis_data['frameworks']
+        patterns = analysis_data['patterns']
+        entry_points = analysis_data['entry_points']
+        
+        # Web applications
+        if any(fw in frameworks for fw in ['django', 'flask', 'fastapi', 'express', 'koa']):
+            return 'web_application'
+        if any(fw in frameworks for fw in ['react', 'vue', 'angular', 'nextjs', 'nuxt']):
+            return 'web_application'
+            
+        # Data science projects
+        if any(fw in frameworks for fw in ['pandas', 'numpy', 'scikit-learn', 'tensorflow', 'pytorch']):
+            return 'data_science'
+        if 'jupyter' in frameworks or 'notebooks' in patterns:
+            return 'data_science'
+            
+        # CLI applications
+        if any(fw in frameworks for fw in ['click', 'argparse', 'typer']) and entry_points:
+            return 'cli_application'
+        if 'cli_application' in patterns:
+            return 'cli_application'
+            
+        # Mobile applications
+        if any(fw in frameworks for fw in ['react-native', 'flutter', 'xamarin']):
+            return 'mobile_application'
+            
+        # Default to library
+        return 'library'
     
     def _summarize_tech_stack(self, analysis_data: Dict[str, Any]) -> Dict[str, Any]:
         """Summarize the technology stack."""

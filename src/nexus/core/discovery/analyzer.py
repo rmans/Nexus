@@ -329,11 +329,8 @@ class CodeAnalyzer:
         if any(d in dirs for d in ['test', 'tests', '__tests__', 'spec']):
             patterns.append('has_tests')
         
-        # Documentation - enhanced detection
-        doc_patterns = [
-            'docs', 'documentation', 'readme', 'generated-docs', 
-            'nexus_docs', 'src/*/docs', '*/readmes'
-        ]
+        # Documentation - more universal detection
+        doc_patterns = ['docs', 'documentation', 'readme']
         doc_found = False
         
         # Check for documentation directories
@@ -356,42 +353,64 @@ class CodeAnalyzer:
         if doc_found:
             patterns.append('documented')
         
-        # CLI Application detection
-        if (target_path / 'pyproject.toml').exists():
-            try:
-                import toml
-                pyproject_data = toml.load(target_path / 'pyproject.toml')
-                scripts = pyproject_data.get('project', {}).get('scripts', {})
-                if scripts:
-                    patterns.append('cli_application')
-            except Exception:
-                pass
+        # Detect project type first for context-aware pattern detection
+        frameworks = self._detect_frameworks(target_path)
+        project_type = self._detect_project_type(target_path, frameworks)
         
-        # Check for Click-based CLI
-        if any(frameworks := self._detect_frameworks(target_path)) and 'click' in frameworks:
-            patterns.append('cli_application')
-            patterns.append('rich_output')
+        # CLI Application detection (only for CLI projects)
+        if project_type == 'cli_application':
+            if (target_path / 'pyproject.toml').exists():
+                try:
+                    import toml
+                    pyproject_data = toml.load(target_path / 'pyproject.toml')
+                    scripts = pyproject_data.get('project', {}).get('scripts', {})
+                    if scripts:
+                        patterns.append('cli_application')
+                except Exception:
+                    pass
+            
+            # Check for Click-based CLI
+            if 'click' in frameworks:
+                patterns.append('cli_application')
+                patterns.append('rich_output')
+            
+            # CLI-specific patterns
+            if any(d in dirs for d in ['plugins', 'extensions', 'modules', 'core']):
+                patterns.append('plugin_architecture')
+            
+            if 'jinja2' in frameworks:
+                patterns.append('template_system')
+            
+            config_files = ['config.yaml', 'config.yml', '.env', '.env.example']
+            if any((target_path / f).exists() for f in config_files):
+                patterns.append('hybrid_configuration')
+            
+            installer_files = ['install.py', 'install.sh', 'install.bat', 'install-macos.sh']
+            if any((target_path / f).exists() for f in installer_files):
+                patterns.append('cross_platform')
         
-        # Plugin architecture detection
-        if any(d in dirs for d in ['plugins', 'extensions', 'modules', 'core']):
+        # Web application patterns
+        elif project_type == 'web_application':
+            if any(fw in frameworks for fw in ['django', 'flask', 'fastapi']):
+                patterns.append('web_backend')
+            if any(fw in frameworks for fw in ['react', 'vue', 'angular']):
+                patterns.append('web_frontend')
+            if any(d in dirs for d in ['api', 'apis', 'routes', 'endpoints']):
+                patterns.append('api_service')
+        
+        # Data science patterns
+        elif project_type == 'data_science':
+            if 'jupyter' in frameworks:
+                patterns.append('notebooks')
+            if any(fw in frameworks for fw in ['pandas', 'numpy', 'scikit-learn']):
+                patterns.append('data_analysis')
+        
+        # Universal patterns
+        if any(d in dirs for d in ['plugins', 'extensions', 'modules']):
             patterns.append('plugin_architecture')
         
-        # Template system detection
-        if any(frameworks := self._detect_frameworks(target_path)) and 'jinja2' in frameworks:
-            patterns.append('template_system')
-        
-        # Hybrid configuration detection
-        config_files = ['config.yaml', 'config.yml', '.env', '.env.example']
-        if any((target_path / f).exists() for f in config_files):
-            patterns.append('hybrid_configuration')
-        
-        # Cross-platform detection
-        installer_files = ['install.py', 'install.sh', 'install.bat', 'install-macos.sh']
-        if any((target_path / f).exists() for f in installer_files):
-            patterns.append('cross_platform')
-        
-        # Documentation system detection
-        if any(d in dirs for d in ['generated-docs', 'nexus_docs', 'src/*/docs']):
+        # Documentation system detection (more conservative)
+        if any(d in dirs for d in ['docs', 'documentation']) and len(readme_files) > 1:
             patterns.append('documentation_system')
         
         # Configuration
@@ -399,6 +418,42 @@ class CodeAnalyzer:
             patterns.append('containerized')
         
         return patterns
+    
+    def _detect_project_type(self, target_path: Path, frameworks: List[str]) -> str:
+        """Detect the project type for context-aware pattern detection."""
+        # Web applications
+        if any(fw in frameworks for fw in ['django', 'flask', 'fastapi', 'express', 'koa']):
+            return 'web_application'
+        if any(fw in frameworks for fw in ['react', 'vue', 'angular', 'nextjs', 'nuxt']):
+            return 'web_application'
+            
+        # Data science projects
+        if any(fw in frameworks for fw in ['pandas', 'numpy', 'scikit-learn', 'tensorflow', 'pytorch']):
+            return 'data_science'
+        if 'jupyter' in frameworks:
+            return 'data_science'
+            
+        # CLI applications
+        if any(fw in frameworks for fw in ['click', 'argparse', 'typer']):
+            return 'cli_application'
+        
+        # Check for CLI entry points
+        if (target_path / 'pyproject.toml').exists():
+            try:
+                import toml
+                pyproject_data = toml.load(target_path / 'pyproject.toml')
+                scripts = pyproject_data.get('project', {}).get('scripts', {})
+                if scripts:
+                    return 'cli_application'
+            except Exception:
+                pass
+            
+        # Mobile applications
+        if any(fw in frameworks for fw in ['react-native', 'flutter', 'xamarin']):
+            return 'mobile_application'
+            
+        # Default to library
+        return 'library'
     
     def _analyze_quality(self, target_path: Path, deep_analysis: bool = False) -> Dict[str, Any]:
         """Analyze code quality metrics."""
