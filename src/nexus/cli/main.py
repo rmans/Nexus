@@ -97,8 +97,9 @@ def update_project(ctx, force, check_only):
 @click.option('--deep', is_flag=True, help='Enable deeper analysis')
 @click.option('--languages', help='Comma-separated list of languages')
 @click.option('--clear-cache', is_flag=True, help='Clear discovery cache')
+@click.option('--save', help='Save discovery report with given title')
 @click.pass_context
-def discover(ctx, path, output, cache, deep, languages, clear_cache):
+def discover(ctx, path, output, cache, deep, languages, clear_cache, save):
     """Discover and analyze code structure, dependencies, and patterns.
     
     Automatically analyzes codebases to understand structure, dependencies, 
@@ -106,6 +107,7 @@ def discover(ctx, path, output, cache, deep, languages, clear_cache):
     """
     from nexus.core.discovery.engine import DiscoveryEngine
     from nexus.core.discovery.cache import DiscoveryCache
+    from nexus.core.discovery.reports import DiscoveryReportManager
     
     if clear_cache:
         config_manager = ctx.obj.get('config_manager')
@@ -125,10 +127,63 @@ def discover(ctx, path, output, cache, deep, languages, clear_cache):
     target_path = Path(path).resolve()
     results = engine.discover(target_path, options)
     
+    # Save report if requested
+    if save:
+        report_manager = DiscoveryReportManager(config_manager)
+        report_path = report_manager.save_report(results, save, target_path)
+        console.print(f"📄 Discovery report saved: {report_path}", style="green")
+    
     if output == 'json':
         console.print(engine.outputs.format_json(results, pretty=True))
     else:
         console.print(engine.outputs.format_summary(results))
+
+
+@main.command("discovery")
+@click.argument('action', type=click.Choice(['list', 'view']))
+@click.argument('report_id', required=False)
+@click.pass_context
+def discovery(ctx, action, report_id):
+    """Manage discovery reports.
+    
+    List or view saved discovery reports.
+    """
+    from nexus.core.discovery.reports import DiscoveryReportManager
+    
+    config_manager = ctx.obj.get('config_manager')
+    report_manager = DiscoveryReportManager(config_manager)
+    
+    if action == 'list':
+        reports = report_manager.list_reports()
+        
+        if not reports:
+            console.print("📄 No discovery reports found", style="yellow")
+            return
+        
+        console.print("📄 Discovery Reports", style="bold blue")
+        console.print("=" * 50)
+        
+        for report in reports:
+            title = report.get('title', report['filename'])
+            date = report.get('date', 'Unknown')
+            console.print(f"• {title} ({date})")
+            console.print(f"  File: {report['filename']}")
+            console.print()
+    
+    elif action == 'view':
+        if not report_id:
+            console.print("❌ Report ID required for view action", style="red")
+            console.print("Usage: nexus discovery view <report-id>")
+            return
+        
+        report = report_manager.get_report(report_id)
+        if not report:
+            console.print(f"❌ Report not found: {report_id}", style="red")
+            return
+        
+        console.print(f"📄 Viewing: {report['metadata'].get('title', report_id)}")
+        console.print("=" * 50)
+        console.print(report['content'])
 
 
 @main.command("list-commands")
