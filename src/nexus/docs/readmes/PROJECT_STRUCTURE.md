@@ -19,13 +19,29 @@ Nexus/
 ├── src/                       # Source code
 │   └── nexus/                 # Main package
 │       ├── cli/               # CLI commands and interface
+│       │   ├── main.py        # Main CLI entry point
+│       │   └── discover.py    # Discovery System CLI interface
 │       ├── core/              # Core functionality and business logic
+│       │   ├── __init__.py    # Core module initialization
+│       │   ├── commands.py    # Command listing and management
 │       │   ├── config.py      # Configuration management
 │       │   ├── hybrid_config.py # Hybrid configuration system
 │       │   ├── updater.py     # Smart update system
 │       │   ├── status.py      # Project status management
 │       │   ├── project_init.py # Project initialization
 │       │   ├── version.py     # Centralized version management
+│       │   ├── generator.py   # Documentation generation
+│       │   ├── server.py      # Documentation server
+│       │   ├── validator.py   # Project validation
+│       │   ├── instructions.py # Instruction management
+│       │   ├── content_analyzer.py # Content analysis
+│       │   ├── content_enhancer.py # Content enhancement
+│       │   ├── content_migrator.py # Content migration
+│       │   ├── integration_tester.py # Integration testing
+│       │   ├── performance_tester.py # Performance testing
+│       │   ├── installer.py   # Installation system
+│       │   ├── templates.py   # Template management
+│       │   ├── template_discovery.py # Template auto-discovery
 │       │   └── discovery/     # Discovery System for code analysis
 │       │       ├── __init__.py    # Discovery module initialization
 │       │       ├── engine.py      # Main discovery orchestrator
@@ -108,13 +124,28 @@ src/
 ### Package Structure Details
 
 - **`cli/`**: Command-line interface implementations and command handlers
+  - **`main.py`**: Main CLI entry point with all command definitions
+  - **`discover.py`**: Discovery System CLI interface
 - **`core/`**: Houses the core business logic, data models, and main application functionality
+  - **`commands.py`**: Command listing and management utilities
   - **`config.py`**: Legacy configuration management
   - **`hybrid_config.py`**: Enhanced hybrid configuration system with priority loading
   - **`updater.py`**: Smart update system for project files
   - **`status.py`**: Project status management and reporting
   - **`project_init.py`**: Project initialization and setup
+  - **`generator.py`**: Documentation generation system
+  - **`server.py`**: Documentation server implementation
+  - **`validator.py`**: Project validation and structure checking
+  - **`instructions.py`**: Instruction management and execution
+  - **`content_analyzer.py`**: Content analysis and pattern detection
+  - **`content_enhancer.py`**: Content enhancement and improvement
+  - **`content_migrator.py`**: Content migration between structures
+  - **`integration_tester.py`**: Integration testing framework
+  - **`performance_tester.py`**: Performance testing and benchmarking
+  - **`installer.py`**: Cross-platform installation system
+  - **`templates.py`**: Template management and processing
   - **`template_discovery.py`**: Auto-discovery of template files
+  - **`version.py`**: Centralized version management
 - **`docs/`**: Project-specific documentation files
   - **`readmes/`**: Modular README sections for organized documentation
   - **`configs/`**: Comprehensive configuration structure

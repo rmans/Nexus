@@ -38,7 +38,7 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 
 - 🏗️ **Modular Architecture** - Clean separation of concerns with organized package structure
 - 📖 **Comprehensive Documentation** - Auto-generated docs with modular README sections
-- 🧪 **Testing Infrastructure** - Built-in testing framework with organized test structure
+- 🧪 **Testing Infrastructure** - Built-in testing framework with integration and performance testing
 - ⚙️ **Hybrid Configuration System** - Multi-layer configuration with full API compatibility and performance optimization
 - 🔄 **Smart Update System** - Automatic detection and seamless updates of project files
 - 🔍 **Discovery System** - Automatic code analysis, pattern recognition, and intelligent insights with report management
@@ -49,6 +49,10 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 - 🔧 **Configuration Templates** - Pre-built templates and schemas for easy setup
 - 📄 **Report Management** - Save, list, and view discovery reports with DISC-YYYY-MM-DD-Title naming
 - 🎨 **Rich CLI Interface** - Beautiful console output with progress indicators and colored output
+- 🔧 **Content Management** - Analyze, migrate, and enhance documentation content
+- ✅ **Project Validation** - Comprehensive project configuration and structure validation
+- 🧪 **Advanced Testing** - Integration and performance testing with detailed reporting
+- 📝 **Instruction System** - Create and execute custom instruction templates
 
 ## Installation
 
@@ -109,20 +113,20 @@ pip install nexus-context
 # Initialize a new project
 nexus init-project
 
-# Check project status and updates
+# Check project status and configuration
 nexus status
 
 # Update project files to latest version
 nexus update-project
+
+# Validate project configuration
+nexus validate
 
 # Generate documentation
 nexus generate-docs
 
 # Serve documentation locally
 nexus serve-docs
-
-# Run comprehensive tests
-nexus test-all
 
 # Discover and analyze codebase
 nexus discover
@@ -136,6 +140,19 @@ nexus discover --deep --save "Deep Analysis Report"
 # Manage discovery reports
 nexus discovery list
 nexus discovery view DISC-2025-09-11-Project-Analysis
+
+# Content management
+nexus analyze-content
+nexus migrate-content
+nexus enhance-content
+
+# Testing
+nexus test-integration
+nexus test-performance
+nexus test-all
+
+# List all available commands
+nexus list-commands
 ```
 
 ## Discovery System

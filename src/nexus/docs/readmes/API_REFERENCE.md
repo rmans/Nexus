@@ -154,7 +154,7 @@ nexus list-commands [OPTIONS]
 Create a new instruction template.
 
 ```bash
-python -m nexus create-instruction NAME [OPTIONS]
+nexus create-instruction NAME [OPTIONS]
 ```
 
 **Options:**
@@ -164,14 +164,14 @@ python -m nexus create-instruction NAME [OPTIONS]
 
 **Example:**
 ```bash
-python -m nexus create-instruction "data-processing" --template basic
+nexus create-instruction "data-processing" --template basic
 ```
 
 ##### `execute-instruction`
 Execute an instruction or workflow.
 
 ```bash
-python -m nexus execute-instruction INSTRUCTION [OPTIONS]
+nexus execute-instruction INSTRUCTION [OPTIONS]
 ```
 
 **Options:**
@@ -181,7 +181,7 @@ python -m nexus execute-instruction INSTRUCTION [OPTIONS]
 
 **Example:**
 ```bash
-python -m nexus execute-instruction "data-processing" --dry-run
+nexus execute-instruction "data-processing" --dry-run
 ```
 
 #### Documentation Commands
@@ -190,24 +190,25 @@ python -m nexus execute-instruction "data-processing" --dry-run
 Generate project documentation.
 
 ```bash
-python -m nexus generate-docs [OPTIONS]
+nexus generate-docs [OPTIONS]
 ```
 
 **Options:**
 - `--output`: Output directory
-- `--format`: Documentation format (html, pdf, markdown)
-- `--include`: Include specific documentation sections
+- `--format`: Documentation format (html, pdf, markdown) (default: markdown)
+- `--include`: Include specific documentation sections (comma-separated)
+- `--auto-reload`: Auto-reload on changes
 
 **Example:**
 ```bash
-python -m nexus generate-docs --format html --output ./docs
+nexus generate-docs --format html --output ./docs
 ```
 
 ##### `serve-docs`
 Start a local documentation server.
 
 ```bash
-python -m nexus serve-docs [OPTIONS]
+nexus serve-docs [OPTIONS]
 ```
 
 **Options:**
@@ -217,7 +218,128 @@ python -m nexus serve-docs [OPTIONS]
 
 **Example:**
 ```bash
-python -m nexus serve-docs --port 8080
+nexus serve-docs --port 8080
+```
+
+#### Validation Commands
+
+##### `validate`
+Validate project configuration and structure.
+
+```bash
+nexus validate [OPTIONS]
+```
+
+**Options:**
+- `--fix`: Automatically fix issues where possible
+- `--strict`: Use strict validation rules
+
+**Example:**
+```bash
+nexus validate --fix
+```
+
+#### Content Management Commands
+
+##### `analyze-content`
+Analyze existing documentation content for patterns and insights.
+
+```bash
+nexus analyze-content [OPTIONS]
+```
+
+**Options:**
+- `--output`: Output file for analysis results
+- `--export-templates`: Export templates from analysis
+
+**Example:**
+```bash
+nexus analyze-content --export-templates
+```
+
+##### `migrate-content`
+Migrate existing generated-docs content to new structure.
+
+```bash
+nexus migrate-content [OPTIONS]
+```
+
+**Options:**
+- `--preserve-original`: Keep original files after migration
+- `--report`: Generate migration report file
+
+**Example:**
+```bash
+nexus migrate-content --report migration-report.json
+```
+
+##### `enhance-content`
+Enhance documentation content quality.
+
+```bash
+nexus enhance-content [OPTIONS]
+```
+
+**Options:**
+- `--preview`: Preview enhancements without applying
+- `--apply`: Apply enhancement suggestions
+- `--report`: Generate enhancement report file
+- `--target-dir`: Directory to enhance (defaults to nexus_docs)
+
+**Example:**
+```bash
+nexus enhance-content --preview
+```
+
+#### Testing Commands
+
+##### `test-integration`
+Run comprehensive integration tests.
+
+```bash
+nexus test-integration [OPTIONS]
+```
+
+**Options:**
+- `--output`: Output file for test results
+- `--verbose`: Show detailed test output
+
+**Example:**
+```bash
+nexus test-integration --verbose
+```
+
+##### `test-performance`
+Run performance tests.
+
+```bash
+nexus test-performance [OPTIONS]
+```
+
+**Options:**
+- `--output`: Output file for performance results
+- `--large-files`: Test with large files
+
+**Example:**
+```bash
+nexus test-performance --large-files
+```
+
+##### `test-all`
+Run all tests (integration and performance).
+
+```bash
+nexus test-all [OPTIONS]
+```
+
+**Options:**
+- `--integration`: Run integration tests
+- `--performance`: Run performance tests
+- `--output`: Output directory for test results
+
+**Example:**
+```bash
+nexus test-all --output ./test-results
 ```
 
 ## Configuration

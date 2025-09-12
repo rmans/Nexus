@@ -87,6 +87,9 @@ nexus list-commands
 
 # Check project status with details
 nexus status --detailed
+
+# Validate project configuration
+nexus validate
 ```
 
 ### 3. Generate and Serve Documentation
@@ -100,6 +103,19 @@ nexus serve-docs
 
 # Run comprehensive tests
 nexus test-all
+```
+
+### 4. Content Management
+
+```bash
+# Analyze existing content
+nexus analyze-content
+
+# Migrate content to new structure
+nexus migrate-content
+
+# Enhance content quality
+nexus enhance-content --preview
 ```
 
 ## Discovery System
