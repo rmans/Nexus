@@ -12,7 +12,7 @@ Discovery reports follow the naming convention: `DISC-YYYY-MM-DD-Title.md`
 
 ## Available Reports
 
-No discovery reports are currently available. Generate your first report using the commands below.
+- **dar discovery system** (2025-09-11) - `DISC-2025-09-11-dar-discovery-system.md`
 
 ## Usage
 
