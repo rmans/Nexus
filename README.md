@@ -41,6 +41,7 @@ Auto-generated technical documentation is available in the `generated-docs/` dir
 - 🧪 **Testing Infrastructure** - Built-in testing framework with organized test structure
 - ⚙️ **Fixed Hybrid Configuration System** - Multi-layer configuration with full API compatibility and performance optimization
 - 🔄 **Smart Update System** - Automatic detection and seamless updates of project files
+- 🔍 **Discovery System** - Automatic code analysis, pattern recognition, and intelligent insights
 - 🎯 **Cursor Integration** - Built-in support for Cursor AI assistant with rule management
 - 📊 **Documentation Generation** - Automated documentation generation from code
 - 🌍 **Environment Management** - Development, testing, staging, and production configurations
@@ -120,7 +121,53 @@ nexus serve-docs
 
 # Run comprehensive tests
 nexus test-all
+
+# Discover and analyze codebase
+nexus discover
+nexus discover --deep
+nexus discover --output json
 ```
+
+## Discovery System
+
+Nexus includes a powerful **Discovery System** that automatically analyzes your codebase to understand structure, dependencies, patterns, and quality:
+
+### Key Features
+- 🔍 **Automatic Code Analysis** - Analyzes project structure, dependencies, and patterns
+- 📊 **Language Detection** - Identifies programming languages and frameworks used
+- 🏗️ **Architectural Pattern Recognition** - Detects design patterns and architectural styles
+- 💡 **Intelligent Insights** - Provides recommendations and quality assessments
+- ⚡ **Performance Caching** - Caches results for faster subsequent analyses
+- 🎯 **CLI Integration** - Easy-to-use command-line interface
+
+### Discovery Commands
+```bash
+# Basic discovery
+nexus discover [path]
+
+# Deep analysis with detailed insights
+nexus discover --deep
+
+# JSON output for integration
+nexus discover --output json
+
+# Language-specific analysis
+nexus discover --languages python,javascript
+
+# Use cached results
+nexus discover --cache
+
+# Clear discovery cache
+nexus discover --clear-cache
+```
+
+### Discovery Output
+The Discovery System provides:
+- **Project Overview** - File count, size, languages, frameworks
+- **Quality Assessment** - Code quality score, test coverage, documentation status
+- **Architecture Analysis** - Project type, complexity, patterns
+- **Insights & Recommendations** - Actionable suggestions for improvement
+- **Tech Stack Summary** - Main languages, frameworks, and tools
 
 ## Configuration
 

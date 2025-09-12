@@ -73,6 +73,41 @@ nexus update-project [OPTIONS]
 nexus update-project --force
 ```
 
+##### `discover`
+Discover and analyze code structure, dependencies, and patterns.
+
+```bash
+nexus discover [PATH] [OPTIONS]
+```
+
+**Arguments:**
+- `PATH`: Target path to analyze (default: current directory)
+
+**Options:**
+- `--output`: Output format (`json`, `summary`) (default: `summary`)
+- `--cache`: Use cached results if available
+- `--deep`: Enable deeper analysis
+- `--languages`: Comma-separated list of languages to focus on
+- `--clear-cache`: Clear discovery cache
+
+**Examples:**
+```bash
+# Basic discovery
+nexus discover
+
+# Deep analysis with caching
+nexus discover --deep --cache
+
+# JSON output for integration
+nexus discover --output json
+
+# Language-specific analysis
+nexus discover --languages python,javascript
+
+# Clear cache
+nexus discover --clear-cache
+```
+
 ##### `list-commands`
 List all available commands.
 
@@ -338,6 +373,106 @@ generator = DocumentationGenerator()
 
 # Generate documentation
 generator.generate(output_dir="./docs", format="html")
+```
+
+### Discovery System API
+
+#### `DiscoveryEngine`
+Main orchestrator for the Discovery System.
+
+```python
+from nexus.core.discovery.engine import DiscoveryEngine
+from nexus.core.hybrid_config import get_config_manager
+
+# Initialize discovery engine
+config_manager = get_config_manager()
+engine = DiscoveryEngine(config_manager)
+
+# Run discovery
+results = engine.discover(target_path, options={
+    'cache': True,
+    'deep': False,
+    'languages': ['python', 'javascript']
+})
+
+# Format output
+summary = engine.outputs.format_summary(results)
+json_output = engine.outputs.format_json(results, pretty=True)
+```
+
+#### `CodeAnalyzer`
+Performs technical analysis of codebases.
+
+```python
+from nexus.core.discovery.analyzer import CodeAnalyzer
+
+analyzer = CodeAnalyzer()
+analysis = analyzer.analyze(target_path, options={
+    'deep': True,
+    'languages': ['python']
+})
+
+# Access analysis results
+structure = analysis['structure']
+dependencies = analysis['dependencies']
+languages = analysis['languages']
+frameworks = analysis['frameworks']
+patterns = analysis['patterns']
+quality = analysis['quality']
+```
+
+#### `DiscoverySynthesizer`
+Transforms analysis data into insights and recommendations.
+
+```python
+from nexus.core.discovery.synthesizer import DiscoverySynthesizer
+
+synthesizer = DiscoverySynthesizer()
+synthesis = synthesizer.synthesize(analysis)
+
+# Access synthesis results
+insights = synthesis['insights']
+recommendations = synthesis['recommendations']
+architecture = synthesis['architecture']
+tech_stack = synthesis['tech_stack']
+```
+
+#### `DiscoveryCache`
+Manages caching for performance optimization.
+
+```python
+from nexus.core.discovery.cache import DiscoveryCache
+from pathlib import Path
+
+cache = DiscoveryCache(Path("./cache/discovery"))
+
+# Check cache
+cached_result = cache.get(target_path, options)
+
+# Store result
+cache.set(target_path, options, results)
+
+# Clear cache
+cache.clear(target_path)
+
+# Get cache statistics
+stats = cache.get_stats()
+```
+
+#### `DiscoveryValidator`
+Validates discovery results for completeness and accuracy.
+
+```python
+from nexus.core.discovery.validator import DiscoveryValidator
+
+validator = DiscoveryValidator()
+validation = validator.validate(analysis, synthesis)
+
+# Check validation results
+is_valid = validation['valid']
+warnings = validation['warnings']
+errors = validation['errors']
+completeness_score = validation['completeness_score']
 ```
 
 ### Utility Functions

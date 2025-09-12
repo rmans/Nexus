@@ -102,6 +102,59 @@ nexus serve-docs
 nexus test-all
 ```
 
+## Discovery System
+
+Nexus includes a powerful **Discovery System** that automatically analyzes your codebase to understand structure, dependencies, patterns, and quality.
+
+### Quick Discovery
+
+```bash
+# Basic discovery of current directory
+nexus discover
+
+# Deep analysis with detailed insights
+nexus discover --deep
+
+# Analyze specific directory
+nexus discover /path/to/project
+
+# JSON output for integration
+nexus discover --output json
+```
+
+### Discovery Features
+
+- **🔍 Automatic Code Analysis** - Analyzes project structure, dependencies, and patterns
+- **📊 Language Detection** - Identifies programming languages and frameworks used
+- **🏗️ Architectural Pattern Recognition** - Detects design patterns and architectural styles
+- **💡 Intelligent Insights** - Provides recommendations and quality assessments
+- **⚡ Performance Caching** - Caches results for faster subsequent analyses
+
+### Discovery Output
+
+The Discovery System provides:
+- **Project Overview** - File count, size, languages, frameworks
+- **Quality Assessment** - Code quality score, test coverage, documentation status
+- **Architecture Analysis** - Project type, complexity, patterns
+- **Insights & Recommendations** - Actionable suggestions for improvement
+- **Tech Stack Summary** - Main languages, frameworks, and tools
+
+### Advanced Discovery
+
+```bash
+# Language-specific analysis
+nexus discover --languages python,javascript
+
+# Use cached results for faster analysis
+nexus discover --cache
+
+# Clear discovery cache
+nexus discover --clear-cache
+
+# Deep analysis with caching
+nexus discover --deep --cache
+```
+
 ## Configuration
 
 ### Fixed Hybrid Configuration System

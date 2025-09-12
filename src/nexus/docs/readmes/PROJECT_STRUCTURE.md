@@ -24,7 +24,16 @@ Nexus/
 │       │   ├── hybrid_config.py # Hybrid configuration system
 │       │   ├── updater.py     # Smart update system
 │       │   ├── status.py      # Project status management
-│       │   └── project_init.py # Project initialization
+│       │   ├── project_init.py # Project initialization
+│       │   ├── version.py     # Centralized version management
+│       │   └── discovery/     # Discovery System for code analysis
+│       │       ├── __init__.py    # Discovery module initialization
+│       │       ├── engine.py      # Main discovery orchestrator
+│       │       ├── analyzer.py    # Code analysis engine
+│       │       ├── synthesizer.py # Insights and recommendations
+│       │       ├── validator.py   # Result validation
+│       │       ├── cache.py       # Performance caching
+│       │       └── outputs.py     # Output formatting
 │       ├── docs/              # Documentation files
 │       │   ├── readmes/       # Modular README sections
 │       │   └── configs/       # Configuration structure
@@ -51,7 +60,8 @@ The main source code is organized under the `nexus` package:
 src/
 └── nexus/                     # Main package
     ├── cli/                   # CLI commands and interface
-    │   └── main.py            # Main CLI entry point
+    │   ├── main.py            # Main CLI entry point
+    │   └── discover.py        # Discovery System CLI interface
     ├── core/                  # Core functionality and business logic
     │   ├── config.py          # Configuration management
     │   ├── hybrid_config.py   # Hybrid configuration system
@@ -105,6 +115,39 @@ src/
     - **`schemas/`**: JSON schemas for configuration validation
     - **`examples/`**: Usage examples and demonstrations
 - **`instructions/`**: Instruction definitions and templates
+
+## Discovery System (`src/nexus/core/discovery/`)
+
+The Discovery System provides automatic code analysis and project understanding:
+
+```
+src/nexus/core/discovery/
+├── __init__.py        # Discovery module initialization
+├── engine.py          # Main discovery orchestrator
+├── analyzer.py        # Code analysis engine
+├── synthesizer.py     # Insights and recommendations
+├── validator.py       # Result validation
+├── cache.py           # Performance caching
+└── outputs.py         # Output formatting
+```
+
+### Discovery Components
+
+- **`engine.py`**: Main orchestrator that coordinates the discovery process
+- **`analyzer.py`**: Performs technical analysis of codebases (structure, dependencies, patterns)
+- **`synthesizer.py`**: Transforms analysis data into insights and recommendations
+- **`validator.py`**: Ensures completeness and accuracy of discovery results
+- **`cache.py`**: Manages caching for performance optimization
+- **`outputs.py`**: Handles formatting and presentation of results
+
+### Discovery Features
+
+- **Automatic Code Analysis**: Analyzes project structure, dependencies, and patterns
+- **Language Detection**: Identifies programming languages and frameworks
+- **Architectural Pattern Recognition**: Detects design patterns and architectural styles
+- **Intelligent Insights**: Provides recommendations and quality assessments
+- **Performance Caching**: Caches results for faster subsequent analyses
+- **CLI Integration**: Easy-to-use command-line interface (`nexus discover`)
 
 ## Testing (`test/`)
 

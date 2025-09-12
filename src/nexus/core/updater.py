@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List, Any
 from rich.console import Console
 from rich.prompt import Confirm
-from .version import get_current_template_version, version_compare
+from .version import get_current_template_version, version_compare, get_nexus_version
 
 console = Console()
 
@@ -132,6 +132,7 @@ class ProjectUpdater:
         if "nexus" not in config:
             config["nexus"] = {}
         config["nexus"]["template_version"] = self.CURRENT_TEMPLATE_VERSION
+        config["nexus"]["version"] = get_nexus_version()  # Update main version too
         config["nexus"]["last_updated"] = self._get_current_timestamp()
         
         self.config_file.write_text(json.dumps(config, indent=2))
