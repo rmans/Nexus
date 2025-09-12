@@ -96,6 +96,20 @@ This checklist helps ensure your installer meets all requirements and provides a
   - [ ] Test dependency updates
   - [ ] Test auto-update mechanism
 
+- [ ] **Discovery System Testing**
+  - [ ] Test Discovery Engine initialization
+  - [ ] Test Code Analyzer functionality
+  - [ ] Test Discovery Synthesizer insights
+  - [ ] Test Discovery Validator validation
+  - [ ] Test Discovery Cache performance
+  - [ ] Test CLI integration (nexus discover)
+  - [ ] Test discovery on various project types
+  - [ ] Test caching system with different projects
+  - [ ] Test deep analysis mode
+  - [ ] Test JSON output format
+  - [ ] Test language filtering
+  - [ ] Test cache management (clear, invalidate)
+
 - [ ] **Uninstallation Testing**
   - [ ] Test complete removal
   - [ ] Verify no leftover files

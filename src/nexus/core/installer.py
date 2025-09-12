@@ -125,6 +125,14 @@ class NexusInstaller:
                 "schemas/environment.schema.json",
                 ".env.example",
             ],
+            "Discovery System": [
+                "Discovery Engine (automatic code analysis)",
+                "Code Analyzer (structure, dependencies, patterns)",
+                "Synthesizer (insights and recommendations)",
+                "Validator (result validation)",
+                "Cache System (performance optimization)",
+                "CLI Integration (nexus discover command)",
+            ],
             "Documentation": [
                 "README.md (main documentation)",
                 "API_REFERENCE.md",
@@ -136,6 +144,7 @@ class NexusInstaller:
                 "serve_example.py",
                 "docs_example.py",
                 "configuration_examples/",
+                "discovery_example.py",
             ]
         }
     
@@ -243,6 +252,13 @@ class NexusInstaller:
         examples_source = self.package_root / "docs" / "configs" / "examples"
         if examples_source.exists():
             shutil.copytree(examples_source, self.examples_dir, dirs_exist_ok=True)
+        
+        # Install discovery example
+        discovery_example_source = self.package_root / "docs" / "examples" / "discovery_example.py"
+        if discovery_example_source.exists():
+            discovery_example_target = self.examples_dir / "discovery_example.py"
+            shutil.copy2(discovery_example_source, discovery_example_target)
+            console.print("📁 Installed discovery example", style="green")
     
     def _setup_runtime_environment(self) -> None:
         """Set up runtime environment."""
@@ -377,12 +393,31 @@ Fixed Hybrid Configuration System:
 ✅ Runtime config: {self.nexus_dir}/.nexus/config.json
 ✅ Full API compatibility maintained
 
+Discovery System:
+🔍 Automatic code analysis and project understanding
+📊 Language and framework detection
+🏗️ Architectural pattern recognition
+💡 Intelligent insights and recommendations
+⚡ Caching system for performance
+🎯 CLI integration (nexus discover command)
+
 Next Steps:
 1. Add {self.nexus_dir} to your PATH
 2. Run 'nexus init-project' to create a new project
-3. Check 'nexus status' to verify installation
-4. Read the documentation in {self.nexus_dir}/README.md
-5. Explore configuration examples in {self.config_dir}/examples/
+3. Run 'nexus discover' to analyze your codebase
+4. Check 'nexus status' to verify installation
+5. Read the documentation in {self.nexus_dir}/README.md
+6. Explore configuration examples in {self.config_dir}/examples/
+
+Discovery Commands:
+• nexus discover [path] - Analyze project structure
+• nexus discover --deep - Detailed analysis
+• nexus discover --output json - JSON output
+• nexus discover --cache - Use cached results
+
+Examples:
+• python {self.examples_dir}/discovery_example.py - Run discovery examples
+• Check {self.examples_dir}/ for more examples
 
 For help, run: nexus --help""",
             title="Installation Successful",
@@ -422,6 +457,25 @@ For help, run: nexus --help""",
             console.print(f"  Debug mode: {debug_mode}, Development: {dev_mode}")
             console.print(f"  Directories: docs={docs_dir}, cache={cache_dir}")
             console.print(f"  Backwards compatibility: {old_docs_dir == docs_dir}")
+            
+            # Test Discovery System
+            console.print("🔍 Testing Discovery System...", style="blue")
+            try:
+                from nexus.core.discovery.engine import DiscoveryEngine
+                from nexus.core.discovery.cache import DiscoveryCache
+                
+                # Test Discovery Engine initialization
+                engine = DiscoveryEngine(config_manager)
+                console.print("✅ Discovery Engine initialized successfully", style="green")
+                
+                # Test Discovery Cache
+                cache = DiscoveryCache(cache_dir / "discovery")
+                console.print("✅ Discovery Cache initialized successfully", style="green")
+                
+                console.print("✅ Discovery System test passed", style="green")
+                
+            except Exception as e:
+                console.print(f"⚠️ Discovery System test failed: {e}", style="yellow")
             
         except Exception as e:
             console.print(f"⚠️ Configuration system test failed: {e}", style="yellow")
